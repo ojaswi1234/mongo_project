@@ -1,0 +1,172 @@
+
+==============================================================================
+======== SMART HOSPITAL & PATIENT CARE MANAGEMENT SYSTEM (MEDITRACK) =========
+==============================================================================
+
+Execution Timestamp : 2026-10-18 22:52:27
+Academic Coursework : CO4, CO5, CO6 - MongoDB & PyMongo Implementation
+Author              : Final Year Computer Science & Engineering
+
+
+==============================================================================
+================= 1. DATABASE CONNECTION & ENVIRONMENT SETUP =================
+==============================================================================
+
+
+[!] Notice: Could not connect to MongoDB server:
+    Reason: bad auth : Authentication failed., full error: {'ok': 0, 'errmsg': 'bad auth : Authentication failed.', 'code': 8000, 'codeName': 'AtlasError'}
+[*] Automatically activated In-Memory Mock Mode (mongomock).
+    The application is fully functional for viva/demo.
+    To connect to a live MongoDB server or Atlas, check your credentials or .env file.
+
+Connection Status   : [MOCK IN-MEMORY MODE]
+Database Selected   : SmartHospitalDB
+
+==============================================================================
+================ 2. SCHEMA VALIDATION ($JSONSCHEMA) & INDEXES ================
+==============================================================================
+
+[*] Mock Mode: Schema validators noted (mock skips server-side collMod).
+Rules Enforced      : BSON types, regex PAT-XXXX, numeric bounds, required fields
+Indexes Configured  : Unique (patient_id, doctor_id), Compound (dept, status), Multikey (vitals)
+
+==============================================================================
+================= 3. POPULATING REALISTIC HOSPITAL SEED DATA =================
+==============================================================================
+
+Doctors Inserted    : 5
+Departments Inserted: 4
+Patients Inserted   : 8
+
+==============================================================================
+================== 4. TESTING SCHEMA VALIDATION ENFORCEMENT ==================
+==============================================================================
+
+Attempting to insert an invalid patient document:
+  - patient_id: 'INVALID_ID_FORMAT' (Violates regex: ^PAT-[0-9]{4}$)
+  - age: 155 (Violates maximum: 125)
+  - gender: 'Alien' (Violates enum: [Male, Female, Other])
+
+[OK] Schema Engine Correctly Blocked Document: Schema Validation Error: patient_id 'INVALID_ID_FORMAT' must match pattern '^PAT-[0-9]4$' (e.g. PAT-1001).
+
+==============================================================================
+=========================== 5. CRUD DEMONSTRATION ============================
+==============================================================================
+
+[5.1] CREATE Operation: Inserting a new valid Patient document...
+Insert Success : True | Patient ID: PAT-1009
+
+[5.2] READ Operation: Querying Admitted Cardiology Patients...
++----------+---------------+-------+---------+----------+--------------+
+| ID       | Name          |   Age | Blood   | Status   | Total Bill   |
++==========+===============+=======+=========+==========+==============+
+| PAT-1001 | Robert Miller |    62 | A+      | Admitted | $2330.0      |
++----------+---------------+-------+---------+----------+--------------+
+| PAT-1009 | Lucas Vance   |    31 | O+      | Admitted | $695.0       |
++----------+---------------+-------+---------+----------+--------------+
+
+[5.3] READ Operation: Clinical Anomaly Search via $elemMatch (HR >= 100 AND SpO2 <= 95)...
++--------------+---------------+------------------+-------------------+------------------+
+| Patient ID   | Name          | Department       | Status            |   Vitals Records |
++==============+===============+==================+===================+==================+
+| PAT-1001     | Robert Miller | Cardiology       | Admitted          |                3 |
++--------------+---------------+------------------+-------------------+------------------+
+| PAT-1004     | Amina Morales | General Medicine | Discharged        |                2 |
++--------------+---------------+------------------+-------------------+------------------+
+| PAT-1005     | Ethan Wright  | Cardiology       | Under Observation |                2 |
++--------------+---------------+------------------+-------------------+------------------+
+
+[5.4] UPDATE Operation: Appending fresh Vital Reading to PAT-1001 using $push...
+Vitals Appended via $push: Modified Count = 1
+
+[5.5] UPDATE Operation: Adding medicine charge ($50) to PAT-1001 via $inc...
+Billing Updated via $inc: Total Bill is now $2380.0 (Status: Paid)
+
+[5.6] DELETE Operation: Soft Deleting PAT-1004 (Setting status to 'Archived')...
+Soft Deletion Result: Modified Count = 1
+
+==============================================================================
+===================== 6. ADVANCED AGGREGATION PIPELINES ======================
+==============================================================================
+
+[PIPELINE 1] Department-wise Patient Analytics & Financial Breakdown ($match, $group, $sort)
++------------------+------------+-----------+-----------------+---------------------+------------+
+| Department       |   Patients |   Avg Age | Total Revenue   | Avg Bill            | Max Bill   |
++==================+============+===========+=================+=====================+============+
+| Orthopedics      |          2 |   45      | $4920.0         | $2460.0             | $3940.0    |
++------------------+------------+-----------+-----------------+---------------------+------------+
+| Cardiology       |          3 |   48.6667 | $3835.0         | $1278.3333333333333 | $2380.0    |
++------------------+------------+-----------+-----------------+---------------------+------------+
+| Neurology        |          2 |   42      | $1950.0         | $975.0              | $1310.0    |
++------------------+------------+-----------+-----------------+---------------------+------------+
+| General Medicine |          1 |   34      | $1535.0         | $1535.0             | $1535.0    |
++------------------+------------+-----------+-----------------+---------------------+------------+
+
+[PIPELINE 2] Doctor Workload & Patient Billing Association ($lookup Cross-Collection Join)
++-------------+-------------------+------------------+-------------+---------------------+-----------+-----------------+
+| Doctor ID   | Name              | Department       |   Exp (Yrs) |   Assigned Patients | Revenue   | Rating          |
++=============+===================+==================+=============+=====================+===========+=================+
+| DOC-201     | Dr. Sarah Jenkins | Cardiology       |          16 |                   3 | $3835.0   | Rating: 4.9/5.0 |
++-------------+-------------------+------------------+-------------+---------------------+-----------+-----------------+
+| DOC-202     | Dr. Rajesh Sharma | Neurology        |          14 |                   2 | $1950.0   | Rating: 4.8/5.0 |
++-------------+-------------------+------------------+-------------+---------------------+-----------+-----------------+
+| DOC-203     | Dr. Emily Taylor  | Orthopedics      |          11 |                   2 | $4920.0   | Rating: 4.7/5.0 |
++-------------+-------------------+------------------+-------------+---------------------+-----------+-----------------+
+| DOC-205     | Dr. Anita Desai   | General Medicine |          12 |                   2 | $3160.0   | Rating: 4.6/5.0 |
++-------------+-------------------+------------------+-------------+---------------------+-----------+-----------------+
+| DOC-204     | Dr. Marcus Vance  | Pediatrics       |           9 |                   0 | $0        | Rating: 4.9/5.0 |
++-------------+-------------------+------------------+-------------+---------------------+-----------+-----------------+
+
+[PIPELINE 3] Clinical Critical Vitals Anomaly Detection ($unwind + $match + $sort)
++----------+---------------+------------------+--------------+--------+---------+--------+
+| ID       | Name          | Department       | Heart Rate   | SpO2   | BP      | Temp   |
++==========+===============+==================+==============+========+=========+========+
+| PAT-1005 | Ethan Wright  | Cardiology       | 118 BPM      | 93%    | 155/100 | 98.6F  |
++----------+---------------+------------------+--------------+--------+---------+--------+
+| PAT-1004 | Amina Morales | General Medicine | 115 BPM      | 95%    | 118/75  | 102.4F |
++----------+---------------+------------------+--------------+--------+---------+--------+
+| PAT-1001 | Robert Miller | Cardiology       | 105 BPM      | 94%    | 145/95  | 99.1F  |
++----------+---------------+------------------+--------------+--------+---------+--------+
+| PAT-1005 | Ethan Wright  | Cardiology       | 96 BPM       | 95%    | 140/90  | 98.5F  |
++----------+---------------+------------------+--------------+--------+---------+--------+
+| PAT-1003 | David Wilson  | Orthopedics      | 92 BPM       | 95%    | 138/85  | 100.2F |
++----------+---------------+------------------+--------------+--------+---------+--------+
+
+[PIPELINE 4] Pharmacy Most Prescribed Medications ($unwind + $group + $sort + $limit)
++----------------------+-----------------------+----------------+-----------------+
+| Medicine Name        |   Total Prescriptions | Avg Duration   | Sample Dosage   |
++======================+=======================+================+=================+
+| Metoprolol           |                     2 | 14.5 days      | 50mg            |
++----------------------+-----------------------+----------------+-----------------+
+| Aspirin              |                     1 | 30.0 days      | 75mg            |
++----------------------+-----------------------+----------------+-----------------+
+| Atorvastatin         |                     1 | 30.0 days      | 20mg            |
++----------------------+-----------------------+----------------+-----------------+
+| Betahistine          |                     1 | 14.0 days      | 16mg            |
++----------------------+-----------------------+----------------+-----------------+
+| Calcium + Vitamin D3 |                     1 | 30.0 days      | 500mg           |
++----------------------+-----------------------+----------------+-----------------+
+
+[PIPELINE 5] Multi-Faceted Executive Hospital Dashboard ($facet Single-Stage Multi-Analysis)
+
+-- Status Distribution:
+Status               Patient Count
+-----------------  ---------------
+Admitted                         5
+Under Observation                2
+Archived                         1
+Discharged                       1
+
+-- Billing Summary:
+Payment Status       Patients  Total Billed
+-----------------  ----------  --------------
+Paid                        4  $6295.0
+Insurance Claimed           1  $3940.0
+Pending                     3  $2095.0
+Partially Paid              1  $1535.0
+
+==============================================================================
+============== EXECUTION DEMONSTRATION COMPLETED SUCCESSFULLY! ===============
+==============================================================================
+
+[OK] Full demonstration log saved to: C:\Users\ojasw\Desktop\SmartHospital_MongoDB\scripts\..\output_demonstration.txt
