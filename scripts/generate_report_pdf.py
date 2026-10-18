@@ -169,7 +169,7 @@ def build_lpu_report(filename="SmartHospital_Project_Report.pdf"):
     story.append(Spacer(1, 35))
     story.append(Paragraph("Under the Guidance of", cover_guidance))
     story.append(Spacer(1, 8))
-    story.append(Paragraph("Mr. Alok Misra", cover_mentor))
+    story.append(Paragraph("Mr. Jaffar Amin Chacket", cover_mentor))
     story.append(Spacer(1, 14))
     story.append(Paragraph("School of Computer Science and Engineering", cover_school))
     story.append(Spacer(1, 40))
@@ -189,7 +189,7 @@ def build_lpu_report(filename="SmartHospital_Project_Report.pdf"):
         "I hereby declare that the project work entitled (<b>“Smart Hospital Management System”</b>) is an "
         "authentic record of my own work carried out as requirements of Project for the award of "
         "<b>B.Tech Degree in Computer Science</b> from Lovely Professional University, Phagwara, "
-        "under the guidance of <b>Mr. Alok Misra</b>, during January to May 2026. All the information "
+        "under the guidance of <b>Mr. Jaffar Amin Chacket</b>, during January to May 2026. All the information "
         "furnished in this project report is based on my own intensive work and is genuine."
     )
     story.append(Paragraph(p_decl, front_body))
@@ -234,7 +234,7 @@ def build_lpu_report(filename="SmartHospital_Project_Report.pdf"):
 
     story.append(Paragraph("<b>Signature and Name of the Mentor</b>", front_body))
     story.append(Spacer(1, 6))
-    story.append(Paragraph("<b>Mr. Alok Misra</b>", front_body))
+    story.append(Paragraph("<b>Mr. Jaffar Amin Chacket</b>", front_body))
     story.append(Paragraph("Assistant Teacher", front_body))
     story.append(Paragraph("School of Computer Science and Engineering,<br/>Lovely Professional University, Phagwara, Punjab.", front_body))
     story.append(Spacer(1, 10))
@@ -262,7 +262,7 @@ def build_lpu_report(filename="SmartHospital_Project_Report.pdf"):
     story.append(Paragraph(p_ack2, front_body))
 
     p_ack3 = (
-        "I am deeply grateful to my project guide, <b>Mr. Alok Misra</b>, for their continuous mentorship, "
+        "I am deeply grateful to my project guide, <b>Mr. Jaffar Amin Chacket</b>, for their continuous mentorship, "
         "constructive feedback, and technical guidance. Their insights were invaluable in refining the project's "
         "database architecture, schema validation rules, and aggregation query design."
     )
@@ -437,20 +437,23 @@ def build_lpu_report(filename="SmartHospital_Project_Report.pdf"):
         "# 4. DELETE: HIPAA-compliant soft delete (archives record, preserves audit trail)\n"
         "db.patients.update_one({'patient_id': 'PAT-1001'}, {'$set': {'status': 'Archived', 'is_archived': True}})"
     )
-    story.append(make_code_block(code_crud, font_size=7.8, leading=10.2))
-
-    story.append(Paragraph("3.3. Viva Defense: Architectural & Query Justifications", sec_h2))
-    story.append(Paragraph("Q: Why use atomic operators ($push, $inc) instead of fetching and saving in Python?", viva_q))
+    story.append(make_code_block(code_crud, font_size=8.0, leading=10.5))
+    story.append(Spacer(1, 6))
     story.append(Paragraph(
-        "<b>A:</b> Multiple healthcare workers update patient charts concurrently. Fetching a document, modifying it in Python, "
-        "and writing it back causes lost-update race conditions. Atomic operators mutate data in-place inside MongoDB with document-level isolation.",
-        viva_a
+        "● <b>Create Operation:</b> Inserts validated inpatient charts into the collection, enforcing database-level $jsonSchema rules.",
+        bullet_text
     ))
-    story.append(Paragraph("Q: Why use $elemMatch for vital queries instead of dot notation?", viva_q))
     story.append(Paragraph(
-        "<b>A:</b> Standard dot queries match if <i>any</i> reading has high HR and <i>any other</i> reading has low SpO2. "
-        "<font name='Courier'>$elemMatch</font> ensures that both abnormal thresholds occurred in the <b>exact same measurement event</b>, preventing false triage alerts.",
-        viva_a
+        "● <b>Read with $elemMatch:</b> Ensures multiple vital anomaly conditions (heart rate and SpO2) are evaluated within the exact same measurement event.",
+        bullet_text
+    ))
+    story.append(Paragraph(
+        "● <b>Atomic Updates ($push &amp; $inc):</b> Streams vital telemetry into arrays without parent document locking, and updates the billing ledger without race conditions.",
+        bullet_text
+    ))
+    story.append(Paragraph(
+        "● <b>Compliant Soft Delete:</b> Flags records as 'Archived' rather than physical disk deletion, satisfying medical audit and HIPAA compliance.",
+        bullet_text
     ))
 
     story.append(PageBreak())
