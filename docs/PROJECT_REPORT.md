@@ -1,7 +1,12 @@
 # Project Report: Smart Hospital & Patient Care Management System (MediTrack)
 
-**Course Outcome Alignment**: CO4, CO5, CO6 | **Bloom's Taxonomy Level**: L2, L3  
-**Technology Stack**: MongoDB, PyMongo, Python (Flask), Atlas Vector Search, Tailwind CSS, Chart.js  
+**Student Name**: Ojaswi Bhardwaj  
+**Registration No.**: 12319444 | **Roll No.**: 37  
+**Subject**: CSE494 | **Section**: K3P23SD  
+**GitHub Repository**: [https://github.com/ojaswi1234/mongo_project.git](https://github.com/ojaswi1234/mongo_project.git)  
+**Live Deployment URL**: [https://mongo-project-nwjl.onrender.com](https://mongo-project-nwjl.onrender.com)  
+**Course Outcome Alignment**: CO4, CO5, CO6 | **Bloom's Taxonomy Level**: L2, L3 — 30 Marks  
+**Technology Stack**: MongoDB 6.0+, PyMongo 4.6+, Python (Flask), Atlas Vector Search, Chart.js  
 
 ---
 
@@ -9,7 +14,7 @@
 
 Modern healthcare organizations face challenges in managing patient data due to the velocity, heterogeneity, and high dimensionality of clinical records. Traditional Relational Database Management Systems (RDBMS) impose rigid tabular schemas that necessitate multi-table normalization (8 to 12 joins per patient encounter) and frequent schema migrations when medical diagnostic fields evolve. 
 
-This project designs and implements **MediTrack**, a full-stack, document-oriented hospital information system built on **MongoDB** and **Python (PyMongo)**. MediTrack utilizes a **hybrid data model** that embeds high-velocity, co-located clinical data (vitals history, prescriptions, medical notes) while referencing shared entities (doctors, departments). The system enforces database-level data integrity using MongoDB **`$jsonSchema` validation**, executes atomic array updates (`$push`, `$addToSet`, `$inc`), and powers an executive intelligence dashboard through **multi-stage aggregation pipelines** (`$match`, `$group`, `$unwind`, `$lookup`, `$facet`). Furthermore, MediTrack integrates **MongoDB Vector Search**, storing 64-dimensional dense semantic embeddings directly inside patient documents to provide an **AI Clinical Case Retrieval & Diagnostic Assistant**.
+This project designs and implements **MediTrack**, a full-stack, document-oriented hospital information system built on **MongoDB** and **Python (PyMongo)**. MediTrack utilizes a **hybrid data model** that embeds high-velocity, co-located clinical data (vitals history, prescriptions, medical notes) while referencing shared entities (doctors, departments). The system enforces database-level data integrity using MongoDB **`$jsonSchema` validation**, executes atomic array updates (`$push`, `$addToSet`, `$inc`), and powers an executive intelligence dashboard through **multi-stage aggregation pipelines** (`$match`, `$group`, `$unwind`, `$lookup`, `$facet`). Furthermore, MediTrack integrates **MongoDB Vector Search**, storing explainable 10-dimensional clinical symptom vectors directly inside patient documents to provide an **AI Clinical Case Retrieval & Diagnostic Assistant**.
 
 ---
 
@@ -61,7 +66,7 @@ MongoDB provides two primary modeling strategies: **Embedding** (denormalization
 |     room_charges, consultation_fee, medicine_charges, total |
 | }                                                           |
 |                                                             |
-| [VECTOR EMBEDDING] clinical_embedding: [0.12, -0.45, ... 64]|
+| [VECTOR EMBEDDING] clinical_embedding: [0.95, 0.10, ... 10D]|
 +-------------------------------------------------------------+
                             |
            (Referenced via assigned_doctor_id)
@@ -162,7 +167,7 @@ db.createCollection("patients", {
 ## 5. CRUD Operations Implementation
 
 ### 5.1 CREATE Operation
-Inserts a compliant BSON document into the `patients` collection while automatically generating its 64-dimensional semantic embedding:
+Inserts a compliant BSON document into the `patients` collection while automatically generating its 10-dimensional clinical symptom vector:
 ```python
 def create_patient(db, patient_data):
     if "clinical_embedding" not in patient_data:
@@ -320,7 +325,7 @@ db.patients.aggregate([
 
 ### 7.1 How MongoDB Functions as a Vector Database
 In modern AI architectures, vector search allows searching unstructured data by **meaning** rather than exact keyword matches. MongoDB natively supports vector storage and search:
-1. **Vector Storage**: High-dimensional embeddings are stored directly in documents as standard BSON arrays of IEEE 754 floating-point numbers (`clinical_embedding: [0.124, -0.453, ...]`).
+1. **Vector Storage**: Clinical symptom embeddings are stored directly in documents as standard BSON arrays of IEEE 754 floating-point numbers (`clinical_embedding: [0.95, 0.10, 0.00, ...]`).
 2. **Unified Data Architecture**: Unlike architectures requiring external vector databases (e.g. Pinecone) synced via message queues, MongoDB houses transactional metadata, live vitals, and vector embeddings in the **same document**.
 3. **MongoDB Atlas `$vectorSearch`**: In production, MongoDB Atlas creates an HNSW (Hierarchical Navigable Small World) index and performs nearest-neighbor vector search directly within aggregation pipelines:
 ```javascript
@@ -329,7 +334,7 @@ db.patients.aggregate([
     $vectorSearch: {
       index: "clinical_vector_index",
       path: "clinical_embedding",
-      queryVector: [0.14, -0.25, ...],
+      queryVector: [0.90, 0.15, 0.0, 0.10, ...],
       numCandidates: 100,
       limit: 5
     }
@@ -344,8 +349,8 @@ db.patients.aggregate([
 ```
 
 ### 7.2 AI Clinical Assistant Workflow
-1. The physician enters an unstructured symptom description (e.g., *"Patient with sharp chest pain radiating to left arm and abnormal pulse"*).
-2. The AI engine computes a 64-dimensional semantic embedding vector $Q$.
+1. The physician enters an unstructured symptom description (e.g., *"acute chest pain and elevated palpitations"*).
+2. The AI engine computes an explainable 10-dimensional clinical symptom vector $Q$ covering 10 primary indicators: Chest Pain, Headache, Fever, Cough, Shortness of Breath, Fatigue, Dizziness, Nausea, Hypertension, and Joint Pain.
 3. The engine computes vector cosine similarity against all patient embeddings in MongoDB:
    $$\text{Cosine Similarity} = \frac{Q \cdot D}{\|Q\| \|D\|}$$
 4. The system ranks the closest matching patient documents, displays match percentages, and synthesizes clinical recommendations and commonly prescribed medications.

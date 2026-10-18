@@ -156,8 +156,16 @@ def build_presentation_pdf(filename="SmartHospital_Presentation.pdf"):
     story.append(t_sub)
 
     info_box = [
-        [Paragraph("<b>Domain:</b> Healthcare Informatics & NoSQL", body_style), Paragraph("<b>Target DB:</b> MongoDB 6.0+ / Atlas", body_style), Paragraph("<b>Language:</b> Python 3.10+ (PyMongo)", body_style)],
-        [Paragraph("<b>Author:</b> Final Year CSE Student", body_style), Paragraph("<b>Web Stack:</b> Flask + Tailwind + Chart.js", body_style), Paragraph("<b>Vector Model:</b> 64-Dim Dense Embeddings", body_style)]
+        [
+            Paragraph("<b>Presenter:</b> <font color='#0f766e'><b>Ojaswi Bhardwaj</b></font>", body_style),
+            Paragraph("<b>Reg No:</b> <b>12319444</b> | <b>Roll No:</b> <b>37</b>", body_style),
+            Paragraph("<b>Subject:</b> <b>CSE494</b> | <b>Section:</b> <b>K3P23SD</b>", body_style)
+        ],
+        [
+            Paragraph('<b>Live URL:</b> <font color="#0f766e"><a href="https://mongo-project-nwjl.onrender.com"><u>mongo-project-nwjl.onrender.com</u></a></font>', body_style),
+            Paragraph('<b>GitHub:</b> <font color="#0f766e"><a href="https://github.com/ojaswi1234/mongo_project.git"><u>github.com/ojaswi1234/mongo_project</u></a></font>', body_style),
+            Paragraph("<b>Tech Stack:</b> MongoDB 6.0+ & PyMongo", body_style)
+        ]
     ]
     t_info = Table(info_box, colWidths=[3.2 * inch, 3.2 * inch, 3.2 * inch])
     t_info.setStyle(TableStyle([
@@ -187,7 +195,7 @@ def build_presentation_pdf(filename="SmartHospital_Presentation.pdf"):
         Paragraph("<b>The MongoDB Solution (MediTrack)</b>", card_title_style),
         Paragraph("&bull; <b>Zero-Join Lookups:</b> Co-locates demographics, continuous vitals, and medications in a single BSON document ($O(1)$ read).", bullet_style),
         Paragraph("&bull; <b>Atomic Streaming:</b> Appends fresh vital telemetry using MongoDB's atomic <font name='Courier'>$push</font> without locking records.", bullet_style),
-        Paragraph("&bull; <b>Embedded AI Vector Search:</b> Stores 64-dim embeddings directly in the document for semantic symptom search.", bullet_style)
+        Paragraph("&bull; <b>Embedded AI Vector Search:</b> Stores 10-dim clinical symptom vectors directly in the document for semantic matching.", bullet_style)
     ]
 
     t_s2 = Table([[c1, c2]], colWidths=[4.8 * inch, 4.8 * inch])
@@ -291,7 +299,7 @@ def build_presentation_pdf(filename="SmartHospital_Presentation.pdf"):
             Paragraph("<b>DELETE (Soft Delete)</b>", card_title_style)
         ],
         [
-            Paragraph("Inserts validated document with auto-generated 64-dim vector embedding.<br/><br/><font name='Courier'>db.patients.insert_one(doc)</font>", body_style),
+            Paragraph("Inserts validated document with auto-generated 10-dim symptom vector embedding.<br/><br/><font name='Courier'>db.patients.insert_one(doc)</font>", body_style),
             Paragraph("Matches patients where heart_rate &ge; 100 AND SpO2 &le; 95 on the <b>exact same reading</b>.<br/><br/><font name='Courier'>$elemMatch: {hr, spo2}</font>", body_style),
             Paragraph("Appends vitals to array via <font name='Courier'>$push</font>.<br/>Increments billing via <font name='Courier'>$inc</font> with zero read-modify-write race conditions.", body_style),
             Paragraph("HIPAA compliant logical archive.<br/><br/><font name='Courier'>$set: {status: 'Archived', is_archived: True}</font>", body_style)
@@ -322,14 +330,14 @@ def build_presentation_pdf(filename="SmartHospital_Presentation.pdf"):
         Paragraph("<b>Stages:</b> <font name='Courier'>$match &rarr; $group &rarr; $project &rarr; $sort</font>", body_style),
         Paragraph("&bull; Groups all admitted patients by <font name='Courier'>department</font>.", bullet_style),
         Paragraph("&bull; Computes total active census, average age, and aggregate billing.", bullet_style),
-        Paragraph("&bull; <b>Result:</b> Orthopedics ($4,920 total, avg $2,460), Cardiology ($3,835 total).", bullet_style)
+        Paragraph("&bull; <b>Result:</b> Orthopedics ($3,940 total, 1 pt), Cardiology ($3,835 total, 3 pts).", bullet_style)
     ]
     p2_box = [
         Paragraph("<b>PIPELINE 2: Doctor Workload ($lookup Join)</b>", card_title_style),
         Paragraph("<b>Stages:</b> <font name='Courier'>$lookup &rarr; $project &rarr; $sort</font>", body_style),
         Paragraph("&bull; Joins <font name='Courier'>doctors</font> with <font name='Courier'>patients</font> where <font name='Courier'>doctor_id == assigned_doctor_id</font>.", bullet_style),
         Paragraph("&bull; Computes caseload size via <font name='Courier'>$size</font> and total billing contribution.", bullet_style),
-        Paragraph("&bull; <b>Result:</b> Dr. Sarah Jenkins (3 patients, $3,835 rev), Dr. Emily Taylor (2 patients, $4,920 rev).", bullet_style)
+        Paragraph("&bull; <b>Result:</b> Dr. Sarah Jenkins (3 patients, $3,835 rev), Dr. Emily Taylor (1 patient, $3,940 rev).", bullet_style)
     ]
 
     t_s6 = Table([[p1_box, p2_box]], colWidths=[4.8 * inch, 4.8 * inch])
@@ -363,8 +371,8 @@ def build_presentation_pdf(filename="SmartHospital_Presentation.pdf"):
     p5_box = [
         Paragraph("<b>PIPELINE 5: Executive Multi-Faceted KPI ($facet)</b>", card_title_style),
         Paragraph("<b>Single Database Round-Trip:</b> Executes multiple independent sub-pipelines concurrently on the same input documents:", body_style),
-        Paragraph("&bull; <b>Sub-Pipeline A:</b> Inpatient status breakdown (5 Admitted, 2 Observation, 1 Discharged).", bullet_style),
-        Paragraph("&bull; <b>Sub-Pipeline B:</b> Financial realization breakdown ($6,295 Paid, $3,940 Claimed, $2,095 Pending).", bullet_style),
+        Paragraph("&bull; <b>Sub-Pipeline A:</b> Inpatient status breakdown (4 Admitted, 1 Observation, 1 Archived).", bullet_style),
+        Paragraph("&bull; <b>Sub-Pipeline B:</b> Financial realization breakdown ($5,315 Paid, $3,940 Claimed, $1,455 Pending).", bullet_style),
         Paragraph("&bull; <b>Advantage:</b> 66% reduction in network round-trips for executive dashboard generation.", bullet_style)
     ]
 
@@ -390,16 +398,16 @@ def build_presentation_pdf(filename="SmartHospital_Presentation.pdf"):
     vec_left = [
         Paragraph("<b>Why MongoDB for Vectors?</b>", card_title_style),
         Paragraph("&bull; <b>Single Data Store:</b> Eliminates syncing between MongoDB and Pinecone/Weaviate (zero sync drift).", bullet_style),
-        Paragraph("&bull; <b>Unified Document:</b> Transactional vitals, medical notes, and 64-dim embeddings live together.", bullet_style),
+        Paragraph("&bull; <b>Unified Document:</b> Transactional vitals, medical notes, and 10-dim symptom vectors live together.", bullet_style),
         Paragraph("&bull; <b>Atlas Vector Search:</b> Uses native HNSW index via <font name='Courier'>$vectorSearch</font> aggregation operator.", bullet_style),
         Paragraph("&bull; <b>Hybrid Filtering:</b> Allows combining vector similarity with traditional metadata filters (e.g. department).", bullet_style)
     ]
     vec_right = [
         Paragraph("<b>Live AI Clinical Assistant Workflow</b>", card_title_style),
-        Paragraph("1. Physician types: <i>'acute chest pain, tachycardia, and suspected blockage'</i>.", body_style),
-        Paragraph("2. System generates a 64-dimensional query vector $Q$.", body_style),
+        Paragraph("1. Physician types: <i>'acute chest pain and elevated palpitations'</i>.", body_style),
+        Paragraph("2. System generates a 10-dimensional clinical symptom vector $Q$.", body_style),
         Paragraph("3. Performs cosine similarity search across MongoDB patient charts.", body_style),
-        Paragraph("4. <b>Result:</b> Matches PAT-1001 (88.4%) and PAT-1005 (82.1%) with <b>High Confidence</b>.", body_style),
+        Paragraph("4. <b>Result:</b> Matches PAT-1005 (100.0%) and PAT-1001 (70.7%) with <b>High Confidence</b>.", body_style),
         Paragraph("5. AI synthesizes diagnostic summary and suggests common medications (Atorvastatin, Metoprolol).", body_style)
     ]
 

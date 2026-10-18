@@ -9,9 +9,12 @@
 ## Slide 1: Title & Introduction
 - **Slide Title**: MediTrack: Intelligent Hospital Management & AI Vector Database
 - **Subtitle**: Designing Document-Oriented Architecture, Schema Validation, and Aggregation Pipelines with MongoDB and PyMongo
-- **Presenter**: Final Year B.Tech Computer Science & Engineering
-- **Alignment**: CO4, CO5, CO6 (L2, L3)
-> **Speaking Note**: "Good morning respected evaluators. Today I am presenting MediTrack, a full-stack, MongoDB-powered healthcare application that combines document-oriented database design with modern AI Vector Search for clinical triage."
+- **Presenter**: Ojaswi Bhardwaj (Registration No: 12319444, Roll No: 37)
+- **Subject**: CSE494 | **Section**: K3P23SD
+- **GitHub Repository**: [https://github.com/ojaswi1234/mongo_project.git](https://github.com/ojaswi1234/mongo_project.git)
+- **Live Deployment URL**: [https://mongo-project-nwjl.onrender.com](https://mongo-project-nwjl.onrender.com)
+- **Alignment**: CO4, CO5, CO6 (L2, L3) — 30 Marks Evaluation
+> **Speaking Note**: "Good morning respected evaluators. I am Ojaswi Bhardwaj (Reg: 12319444, Roll: 37, Section: K3P23SD). Today I am presenting MediTrack, deployed live at mongo-project-nwjl.onrender.com, an intelligent full-stack hospital care system with MongoDB and AI Vector Search."
 
 ---
 
@@ -34,7 +37,7 @@
     - *Rationale*: High read locality, bounded cardinality, atomic single-document updates.
   - **Referenced (1-to-Many)**: `assigned_doctor_id` referencing `doctors` collection.
     - *Rationale*: Avoids massive data duplication and update anomalies across thousands of patient records.
-  - **Vector Embedding**: `clinical_embedding` (64-dimensional float array for AI search).
+  - **Vector Embedding**: `clinical_embedding` (10-dimensional symptom score array for AI search).
 > **Speaking Note**: "A common mistake in NoSQL is embedding everything. We adopted a disciplined hybrid approach: embedding bounded records like daily vitals, but referencing shared entities like doctors."
 
 ---
@@ -52,7 +55,7 @@
 ---
 
 ## Slide 5: Core CRUD Operations & Array Modifiers
-- **CREATE**: `insert_one()` with auto-generated 64-dim vector embedding.
+- **CREATE**: `insert_one()` with auto-generated 10-dim symptom vector embedding.
 - **READ**: Advanced queries using `$elemMatch` to detect simultaneous vital threshold breaches (e.g. HR $\ge 100$ and SpO2 $\le 95$).
 - **UPDATE**:
   - `$push`: Appending fresh telemetry readings to `vitals_history` without touching parent document.
@@ -88,13 +91,13 @@
 ## Slide 8: MongoDB as a Vector Database & AI Clinical Assistant
 - **What is Vector Search?**: Querying documents by **semantic meaning** rather than keywords.
 - **How MediTrack Implements It**:
-  - Clinical diagnostic notes are embedded into 64-dimensional dense vectors.
+  - Clinical diagnostic symptoms are mapped into explainable 10-dimensional symptom vectors (chest pain, fever, cough, shortness of breath, etc.).
   - Stored directly in MongoDB inside the `clinical_embedding` BSON double array.
   - In MongoDB Atlas, this maps directly to native HNSW indexing via `$vectorSearch`.
 - **Clinical AI Workflow**:
-  - Doctor types: *"Patient suffering sharp chest pain, elevated pulse, and shortness of breath"*.
+  - Doctor types: *"acute chest pain and elevated palpitations"*.
   - System calculates cosine similarity against MongoDB documents.
-  - Returns top matches (e.g. 94% similarity) and recommends standard medications based on historical cases.
+  - Returns top matches (e.g. 100% or 70.7% similarity) and recommends standard medications based on historical cases.
 > **Speaking Note**: "MongoDB eliminates the need for a separate vector database like Pinecone. Our transactional vitals, medical history, and vector embeddings all live together in the exact same document."
 
 ---

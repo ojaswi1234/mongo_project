@@ -173,39 +173,45 @@ def build_pdf_report(filename="SmartHospital_Project_Report.pdf"):
     # =========================================================================
     # COVER PAGE
     # =========================================================================
-    story.append(Spacer(1, 40))
-    story.append(Paragraph("ACADEMIC PROJECT REPORT", ParagraphStyle('TopBadge', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=10, textColor=c_primary, alignment=1, spaceAfter=8)))
-    story.append(Paragraph("COURSE OUTCOMES: CO4, CO5, CO6 | BLOOM'S TAXONOMY: L2, L3", ParagraphStyle('SubBadge', parent=styles['Normal'], fontName='Helvetica', fontSize=8.5, textColor=c_muted, alignment=1, spaceAfter=20)))
-    story.append(HRFlowable(width="60%", thickness=2, color=c_primary, spaceAfter=25, hAlign='CENTER'))
+    story.append(Spacer(1, 20))
+    story.append(Paragraph("ACADEMIC PROJECT REPORT", ParagraphStyle('TopBadge', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=10, textColor=c_primary, alignment=1, spaceAfter=6)))
+    story.append(Paragraph("COURSE OUTCOMES: CO4, CO5, CO6 | BLOOM'S TAXONOMY: L2, L3 — 30 MARKS", ParagraphStyle('SubBadge', parent=styles['Normal'], fontName='Helvetica', fontSize=8.5, textColor=c_muted, alignment=1, spaceAfter=16)))
+    story.append(HRFlowable(width="60%", thickness=2, color=c_primary, spaceAfter=18, hAlign='CENTER'))
 
     story.append(Paragraph("MediTrack: Smart Hospital Care System<br/>with MongoDB & AI Vector Search", title_style))
     story.append(Paragraph("A Modern Document-Oriented Healthcare Platform with Schema Validation,<br/>Atomic Array Telemetry, Complex Aggregations & Clinical Vector Search", subtitle_style))
 
-    story.append(Spacer(1, 40))
+    story.append(Spacer(1, 15))
 
-    # Meta Table
+    # Cover Meta Table with Student & Course Details
     cover_meta = [
-        [Paragraph("<b>Problem Statement:</b>", body_style), Paragraph("Q1: Design and implement a MongoDB application for a real-world problem with validation, CRUD, PyMongo, and Aggregation.", body_style)],
-        [Paragraph("<b>Domain & Architecture:</b>", body_style), Paragraph("Healthcare Informatics, Document NoSQL, Atlas Vector Database, Full-Stack Web", body_style)],
-        [Paragraph("<b>Primary Technologies:</b>", body_style), Paragraph("MongoDB 6.0+, PyMongo 4.6+, Python (Flask), Atlas Vector Search, Chart.js", body_style)],
-        [Paragraph("<b>Target Evaluation:</b>", body_style), Paragraph("Final Year B.Tech Computer Science & Engineering (30 Marks Evaluation)", body_style)],
+        [Paragraph("<b>Student Name:</b>", body_style), Paragraph("<font color='#0f766e'><b>Ojaswi Bhardwaj</b></font>", body_style)],
+        [Paragraph("<b>Registration No.:</b>", body_style), Paragraph("<b>12319444</b>", body_style)],
+        [Paragraph("<b>Roll No.:</b>", body_style), Paragraph("<b>37</b>", body_style)],
+        [Paragraph("<b>Subject:</b>", body_style), Paragraph("<b>CSE494</b>", body_style)],
+        [Paragraph("<b>Section:</b>", body_style), Paragraph("<b>K3P23SD</b>", body_style)],
+        [Paragraph("<b>GitHub Repository:</b>", body_style), Paragraph('<font color="#0f766e"><a href="https://github.com/ojaswi1234/mongo_project.git"><u>https://github.com/ojaswi1234/mongo_project.git</u></a></font>', body_style)],
+        [Paragraph("<b>Live Deployment URL:</b>", body_style), Paragraph('<font color="#0f766e"><a href="https://mongo-project-nwjl.onrender.com"><u>https://mongo-project-nwjl.onrender.com</u></a></font>', body_style)],
+        [Paragraph("<b>Problem Statement:</b>", body_style), Paragraph("Q1: Design & implement a MongoDB application for a real-world problem with validation, CRUD, PyMongo, and Aggregation.", body_style)],
+        [Paragraph("<b>Course Outcomes:</b>", body_style), Paragraph("CO4, CO5, CO6 (Bloom's Taxonomy L2, L3) — 30 Marks Evaluation", body_style)],
+        [Paragraph("<b>Primary Tech Stack:</b>", body_style), Paragraph("MongoDB 6.0+, PyMongo 4.6+, Python (Flask), Atlas Vector Search, Chart.js", body_style)],
         [Paragraph("<b>Submission Date:</b>", body_style), Paragraph("October 2026", body_style)]
     ]
-    meta_table = Table(cover_meta, colWidths=[2.0 * inch, 4.5 * inch])
+    meta_table = Table(cover_meta, colWidths=[1.8 * inch, 4.7 * inch])
     meta_table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor("#f8fafc")),
-        ('BOX', (0, 0), (-1, -1), 1, colors.HexColor("#cbd5e1")),
+        ('BOX', (0, 0), (-1, -1), 1.2, colors.HexColor("#0f766e")),
         ('INNERGRID', (0, 0), (-1, -1), 0.5, colors.HexColor("#e2e8f0")),
-        ('TOPPADDING', (0, 0), (-1, -1), 7),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 7),
+        ('TOPPADDING', (0, 0), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
         ('LEFTPADDING', (0, 0), (-1, -1), 10),
         ('RIGHTPADDING', (0, 0), (-1, -1), 10),
     ]))
     story.append(meta_table)
 
-    story.append(Spacer(1, 60))
+    story.append(Spacer(1, 20))
     story.append(Paragraph("<b>Department of Computer Science & Engineering</b>", ParagraphStyle('Dept', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=10, textColor=c_dark, alignment=1)))
-    story.append(Paragraph("Autonomous Engineering Institute | Accredited by NBA & NAAC", ParagraphStyle('Inst', parent=styles['Normal'], fontName='Helvetica', fontSize=8.5, textColor=c_muted, alignment=1)))
+    story.append(Paragraph("School of Computer Science and Engineering", ParagraphStyle('Inst', parent=styles['Normal'], fontName='Helvetica', fontSize=8.5, textColor=c_muted, alignment=1)))
     story.append(PageBreak())
 
     # =========================================================================
@@ -227,7 +233,7 @@ def build_pdf_report(filename="SmartHospital_Project_Report.pdf"):
     story.append(Paragraph("&bull; <b>Zero-Join Medical Chart Retrieval:</b> Emergency room doctors retrieve a patient's complete diagnostic history, vitals trend, and medications in a single $O(1)$ disk read.", bullet_style))
     story.append(Paragraph("&bull; <b>Atomic Telemetry Streaming:</b> Attending nurses append second-by-second vital readings using MongoDB's atomic <font name='Courier'>$push</font> operator without locking the main record.", bullet_style))
     story.append(Paragraph("&bull; <b>Strict Clinical Data Integrity:</b> MongoDB's engine-level <font name='Courier'>$jsonSchema</font> blocks malformed entries (e.g. negative heart rates or invalid IDs) before storage.", bullet_style))
-    story.append(Paragraph("&bull; <b>AI Vector Database for Clinical RAG:</b> 64-dimensional dense semantic embeddings stored directly inside patient documents allow physicians to query symptoms in natural language and discover matching historical cases.", bullet_style))
+    story.append(Paragraph("&bull; <b>AI Vector Database for Clinical Case Matching:</b> 10-dimensional clinical symptom vectors (covering chest pain, fever, cough, shortness of breath, headache, etc.) and cosine similarity allow physicians to query symptoms in natural language and discover matching historical cases.", bullet_style))
 
     # Callout Box: Why MongoDB?
     callout_data = [[
@@ -304,7 +310,7 @@ def build_pdf_report(filename="SmartHospital_Project_Report.pdf"):
         '    { "medicine": "Atorvastatin", "dosage": "20mg", "frequency": "Daily", "days": 30 }\n'
         '  ],\n'
         '  "billing": { "room_charges": 1600.0, "consultation_fee": 450.0, "total_amount": 2330.0 },\n'
-        '  "clinical_embedding": [0.124, -0.453, 0.891, ... 64 floats] // Vector Search\n'
+        '  "clinical_embedding": [0.95, 0.10, 0.0, 0.15, ... 10 symptom scores] // Vector Search\n'
         "}"
     )
     t_code = Table([[Paragraph(sample_doc_code.replace('\n', '<br/>').replace(' ', '&nbsp;'), code_style)]], colWidths=[6.5 * inch])
@@ -368,7 +374,7 @@ def build_pdf_report(filename="SmartHospital_Project_Report.pdf"):
     story.append(Paragraph("<b>4.1 CREATE: Document Insertion with Embedding Synthesis</b>", h2_style))
     story.append(Paragraph(
         "Inserts a new patient record into <font name='Courier'>patients</font>. "
-        "The system validates schema compliance and synthesizes a 64-dimensional semantic embedding for AI search:",
+        "The system validates schema compliance and synthesizes a transparent 10-dimensional clinical symptom vector for AI case matching:",
         body_style
     ))
     create_code = (
@@ -496,8 +502,8 @@ def build_pdf_report(filename="SmartHospital_Project_Report.pdf"):
     ))
 
     story.append(Paragraph("<b>Vector Search Architecture:</b>", h2_style))
-    story.append(Paragraph("&bull; <b>Vector Representation:</b> Clinical symptoms and medical history are projected into a 64-dimensional dense semantic vector space normalized to unit length.", bullet_style))
-    story.append(Paragraph("&bull; <b>BSON Storage:</b> Stored natively in the document as an array of IEEE 754 doubles: <font name='Courier'>clinical_embedding: [0.124, -0.453, ...]</font>.", bullet_style))
+    story.append(Paragraph("&bull; <b>Vector Representation:</b> Clinical symptoms and patient complaints are mapped into an explainable 10-dimensional clinical symptom vector space covering primary indicators: Chest Pain, Headache, Fever, Cough, Shortness of Breath, Fatigue, Dizziness, Nausea, Hypertension, and Joint Pain.", bullet_style))
+    story.append(Paragraph("&bull; <b>BSON Storage:</b> Stored natively in the document as an array of doubles: <font name='Courier'>clinical_embedding: [0.95, 0.10, 0.00, ...]</font>.", bullet_style))
     story.append(Paragraph("&bull; <b>Cosine Similarity Search:</b> Computes similarity score $S(Q, D) = (Q \\cdot D) / (\\|Q\\| \\|D\\|)$ against all inpatient charts.", bullet_style))
     story.append(Paragraph("&bull; <b>Production Atlas Syntax:</b> In MongoDB Atlas, this maps natively to the <font name='Courier'>$vectorSearch</font> stage using HNSW graphs:", bullet_style))
 
@@ -505,7 +511,7 @@ def build_pdf_report(filename="SmartHospital_Project_Report.pdf"):
         "db.patients.aggregate([\n"
         '  { $vectorSearch: {\n'
         '      index: "clinical_vector_index", path: "clinical_embedding",\n'
-        '      queryVector: [0.124, -0.453, ...], numCandidates: 50, limit: 5\n'
+        '      queryVector: [0.90, 0.15, 0.0, 0.10, ...], numCandidates: 50, limit: 5\n'
         '  }},\n'
         '  { $project: { name: 1, department: 1, medical_notes: 1, score: { $meta: "vectorSearchScore" } } }\n'
         "])"
@@ -536,32 +542,27 @@ def build_pdf_report(filename="SmartHospital_Project_Report.pdf"):
         ],
         [
             Paragraph("Pipeline 1: Department Financials", body_style),
-            Paragraph("Orthopedics: $4,920 (2 patients) | Cardiology: $3,835 (3 patients) | Neurology: $1,950 (2 patients).", body_style),
+            Paragraph("Orthopedics: $3,940 (1 pt) | Cardiology: $3,835 (3 pts, avg $1,278) | Neurology: $1,310 (1 pt).", body_style),
             Paragraph("<font color='#059669'><b>PASSED</b></font>", body_style)
         ],
         [
-            Paragraph("Pipeline 2: Doctor Workload ($lookup)", body_style),
-            Paragraph("Dr. Sarah Jenkins: 3 patients, $3,835 rev | Dr. Emily Taylor: 2 patients, $4,920 rev | Dr. Rajesh Sharma: 2 patients, $1,950 rev.", body_style),
+            Paragraph("Pipeline 2: Clinical Vitals Triage", body_style),
+            Paragraph("Detected anomalies: PAT-1005 (HR 118 BPM, SpO2 93%), PAT-1004 (HR 115 BPM, SpO2 95%), PAT-1001 (HR 105 BPM, SpO2 94%).", body_style),
             Paragraph("<font color='#059669'><b>PASSED</b></font>", body_style)
         ],
         [
-            Paragraph("Pipeline 3: Vitals Anomaly Alert", body_style),
-            Paragraph("Detected: PAT-1005 (HR 118 BPM, SpO2 93%), PAT-1004 (HR 115 BPM, SpO2 95%), PAT-1001 (HR 105 BPM, SpO2 94%).", body_style),
+            Paragraph("Pipeline 3: Prescriptions ($unwind)", body_style),
+            Paragraph("Top Drugs: Metoprolol (2 rx, 14.5 days avg), Sumatriptan (1 rx), Tramadol (1 rx), Paracetamol (1 rx), Aspirin (1 rx).", body_style),
             Paragraph("<font color='#059669'><b>PASSED</b></font>", body_style)
         ],
         [
-            Paragraph("Pipeline 4: Prescriptions ($unwind)", body_style),
-            Paragraph("Top Drugs: Metoprolol (2 rx, 14.5 days avg), Aspirin (1 rx), Atorvastatin (1 rx), Betahistine (1 rx).", body_style),
-            Paragraph("<font color='#059669'><b>PASSED</b></font>", body_style)
-        ],
-        [
-            Paragraph("Pipeline 5: Executive Facets ($facet)", body_style),
-            Paragraph("Bed Status: 5 Admitted, 2 Observation, 1 Discharged | Payment: $6,295 Paid, $3,940 Insurance, $2,095 Pending.", body_style),
+            Paragraph("Pipeline 4: Executive Facets ($facet)", body_style),
+            Paragraph("Bed Status: 4 Admitted, 1 Observation, 1 Archived | Payment: $5,315 Paid, $3,940 Insurance, $1,455 Pending.", body_style),
             Paragraph("<font color='#059669'><b>PASSED</b></font>", body_style)
         ],
         [
             Paragraph("AI Vector Similarity Search", body_style),
-            Paragraph("Query: <i>'chest pain and elevated pulse'</i> &rarr; Matched PAT-1001 (88.4%) & PAT-1005 (82.1%) with Cardiology insight.", body_style),
+            Paragraph("Query: <i>'acute chest pain and elevated palpitations'</i> &rarr; Matched PAT-1005 (100.0%) & PAT-1001 (70.7%) with Cardiology insight.", body_style),
             Paragraph("<font color='#059669'><b>PASSED</b></font>", body_style)
         ]
     ]
@@ -596,8 +597,11 @@ def build_pdf_report(filename="SmartHospital_Project_Report.pdf"):
 
     # Sign-off Block
     sign_table = Table([
-        [Paragraph("<b>Student Signature:</b> ___________________________", body_style), Paragraph("<b>Faculty Evaluator Signature:</b> ___________________________", body_style)],
-        [Paragraph("Date: October 18, 2026", body_style), Paragraph("Marks Awarded: _______ / 30", body_style)]
+        [
+            Paragraph("<b>Student Name:</b> Ojaswi Bhardwaj<br/><b>Reg No:</b> 12319444 | <b>Roll No:</b> 37<br/><b>Signature:</b> ___________________________", body_style),
+            Paragraph("<b>Faculty Evaluator:</b> ___________________________<br/><b>Designation:</b> ___________________________<br/><b>Signature:</b> ___________________________", body_style)
+        ],
+        [Paragraph("<b>Date:</b> October 18, 2026", body_style), Paragraph("<b>Marks Awarded:</b> _______ / 30", body_style)]
     ], colWidths=[3.25 * inch, 3.25 * inch])
     sign_table.setStyle(TableStyle([
         ('TOPPADDING', (0, 0), (-1, -1), 10),

@@ -4,90 +4,45 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0%2B%20%2F%20Atlas-green.svg)](https://www.mongodb.com/)
 [![PyMongo](https://img.shields.io/badge/PyMongo-4.6%2B-darkgreen.svg)](https://pymongo.readthedocs.io/)
 [![Flask](https://img.shields.io/badge/Flask-3.0%2B-black.svg)](https://palletsprojects.com/p/flask/)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind-CSS-38bdf8.svg)](https://tailwindcss.com/)
+[![Live App](https://img.shields.io/badge/Render-Live%20Demo-success?logo=render)](https://mongo-project-nwjl.onrender.com)
 
-A full-stack, enterprise-grade healthcare management application demonstrating **MongoDB document modeling**, **`$jsonSchema` validation**, **PyMongo CRUD operations**, **complex multi-stage aggregation pipelines**, and **MongoDB Vector Search** for AI-assisted clinical diagnosis.
+> **Student Name**: Ojaswi Bhardwaj  
+> **Registration No.**: 12319444 | **Roll No.**: 37  
+> **Subject**: CSE494 | **Section**: K3P23SD  
+> **GitHub Repository**: [https://github.com/ojaswi1234/mongo_project.git](https://github.com/ojaswi1234/mongo_project.git)  
+> **Live Deployment URL**: [https://mongo-project-nwjl.onrender.com](https://mongo-project-nwjl.onrender.com)  
 
-Designed for final-year Computer Science & Engineering academic submission (**Course Outcomes: CO4, CO5, CO6**).
+A clean, presentation-ready full-stack healthcare web application demonstrating **MongoDB document modeling**, **`$jsonSchema` validation**, **PyMongo CRUD operations**, **multi-stage aggregation pipelines**, and **MongoDB Vector Search** for AI-assisted clinical diagnosis.
 
----
-
-## 🌟 Key Features
-
-1. **Hybrid NoSQL Document Architecture**:
-   - **Embedded (1-to-Few)**: Patient vitals history, prescriptions, and billing ledger embedded in a single BSON document for zero-join, high-locality reads.
-   - **Referenced (1-to-Many)**: Physicians and departments referenced via ID to avoid data redundancy and update anomalies.
-2. **Database-Level Schema Validation (`$jsonSchema`)**:
-   - Enforced directly by the MongoDB engine. Validates regex ID patterns (`^PAT-[0-9]{4}$`), age bounds (0–125), enums, and nested structures.
-3. **Atomic MongoDB Updates**:
-   - `$push` for continuous time-stamped vitals telemetry.
-   - `$inc` for atomic mathematical increments on patient billing.
-   - Soft deletion (HIPAA compliance) for permanent audit trails.
-4. **5 Advanced Aggregation Pipelines**:
-   - **Pipeline 1**: Department-wise patient volume, average age, and billing revenue (`$match`, `$group`, `$sort`).
-   - **Pipeline 2**: Doctor workload & revenue attribution (`$lookup` cross-collection join).
-   - **Pipeline 3**: Clinical critical vitals anomaly detection (`$unwind`, `$match`).
-   - **Pipeline 4**: Pharmacy prescription frequency analysis (`$unwind`, `$group`).
-   - **Pipeline 5**: Multi-faceted executive dashboard (`$facet` parallel multi-pipeline execution).
-5. **MongoDB as a Vector Database & AI Clinical Assistant**:
-   - Stores 64-dimensional dense vector embeddings directly in MongoDB documents (`clinical_embedding`).
-   - Natural language symptom search using vector cosine similarity.
-   - Generates AI diagnostic summaries, department routing, and drug recommendations.
-   - Synthesizes the exact MongoDB Atlas `$vectorSearch` aggregation syntax.
-6. **Modern Web Interface**:
-   - Interactive charts with Chart.js (vitals telemetry curves, revenue breakdown).
-   - Responsive UI powered by Tailwind CSS (via CDN).
-   - Auto-fallback to In-Memory Mock mode (`mongomock`) so the project is **100% runnable anywhere offline** during presentations.
+Designed for final-year Computer Science & Engineering academic submission (**Course Outcomes: CO4, CO5, CO6 — 30 Marks**).
 
 ---
 
-## 📁 Project Structure
+## 📁 Simple & Clean Project Structure
 
 ```
 SmartHospital_MongoDB/
 │
-├── app.py                     # Flask Web Application entry point (localhost:5000)
+├── app.py                     # ⭐ Single consolidated app with 8 clean, numbered sections
 ├── SmartHospital_Project_Report.pdf  # ⭐ Formal Academic Project Report (PDF)
 ├── SmartHospital_Presentation.pdf    # ⭐ 10-Slide Landscape Presentation Deck (PDF)
 ├── requirements.txt           # Python dependencies (pymongo, flask, reportlab, etc.)
-├── .env.example               # Environment configuration template
+├── Procfile                   # Cloud deployment command (web: gunicorn app:app)
+├── render.yaml                # Render auto-deployment configuration
 ├── output_demonstration.txt   # Complete verified execution log of all operations
 │
-├── config/
-│   ├── __init__.py
-│   └── database.py            # Connection manager (Local MongoDB, Atlas, or Mock fallback)
-│
-├── database/
-│   ├── __init__.py
-│   ├── schema_validation.py   # Definition of $jsonSchema rules and indexes
-│   └── seed_data.py           # Realistic seed dataset generator with pre-computed vectors
-│
-├── models/
-│   ├── __init__.py
-│   ├── patient.py             # Patient document structure & helpers
-│   └── doctor.py              # Doctor document structure & helpers
-│
-├── operations/
-│   ├── __init__.py
-│   ├── crud.py                # CRUD queries (Create, Read with $elemMatch, Update with $push/$inc, Delete)
-│   └── aggregations.py        # 5 multi-stage Aggregation Pipelines
-│
-├── ai/
-│   ├── __init__.py
-│   └── vector_engine.py       # MongoDB Vector Search engine & AI diagnostic assistant
-│
 ├── scripts/
+│   ├── run_demo.py                  # Terminal demo script running all operations
 │   ├── generate_report_pdf.py       # Standalone compiler for Project Report PDF
 │   ├── generate_presentation_pdf.py # Standalone compiler for Presentation PDF
-│   ├── mongo_queries.js             # Standalone raw MongoDB Shell / Compass query script
-│   └── run_demo.py                  # Automated terminal demonstration and test runner
+│   └── mongo_queries.js             # Raw MongoDB Shell / Compass query script
 │
-├── templates/                 # Modern web templates (Tailwind CSS + Chart.js)
+├── templates/                 # Clean web templates (Tailwind CSS + Chart.js)
 │   ├── base.html              # Base layout with navbar and system status badge
 │   ├── index.html             # Executive hospital dashboard
 │   ├── patients.html          # Searchable patient directory
 │   ├── patient_detail.html    # Patient chart, vitals trend graph, and modals
-│   ├── patient_form.html      # Admission form demonstrating $jsonSchema validation
+│   ├── patient_form.html      # Admission form with $jsonSchema validation test
 │   ├── analytics.html         # Aggregation analytics with interactive charts
 │   └── ai_search.html         # AI Vector Search & Clinical Assistant
 │
@@ -101,69 +56,76 @@ SmartHospital_MongoDB/
 
 ---
 
-## 🚀 Quick Start Guide
+## 🎤 How to Present This Project in 3 Minutes (Viva Walkthrough)
+
+When the evaluator asks you to present your project, follow this 4-step sequence:
+
+### Step 1: Open the Code (`app.py`)
+Show that the code is divided into clean, numbered sections matching the syllabus:
+1. **Section 1 (Line 30)**: Database connection with automatic offline fallback (`mongomock`), guaranteeing zero crashes during viva.
+2. **Section 2 (Line 50)**: Engine-level schema validation (`$jsonSchema`) enforcing patient ID regex (`^PAT-[0-9]{4}$`), age bounds (0–125), and enum boundaries.
+3. **Section 3 (Line 100)**: 10-dimensional clinical symptom vector model (`SYMPTOM_DIMENSIONS`) and cosine similarity function.
+4. **Section 4 (Line 160)**: Realistic starter hospital data seeded with pre-computed vectors.
+5. **Section 5 (Line 280)**: CRUD operations (`add_patient`, `$push` for vitals, `$inc` for billing, `$set` for soft deletion).
+6. **Section 6 (Line 360)**: 4 multi-stage Aggregation pipelines (`$match`, `$group`, `$unwind`, `$facet`).
+7. **Section 7 (Line 450)**: Flask routes rendering the web views.
+
+### Step 2: Run the Terminal Demo
+Open your terminal and run:
+```bash
+python scripts/run_demo.py
+```
+Explain: *"This script tests every single rubric requirement—schema rejection, CRUD operations, aggregation pipelines, and AI vector similarity—displaying the results in clean ASCII tables."*
+
+### Step 3: Demonstrate the Live Web App
+Open `http://localhost:5000` (or the Live URL: `https://mongo-project-nwjl.onrender.com`):
+1. **Dashboard (`/`)**: Show executive KPIs and bed occupancy meters.
+2. **Patients Directory (`/patients`)**: Filter by Department ("Cardiology") or Status ("Admitted").
+3. **Patient Chart (`/patient/PAT-1001`)**:
+   - Show the interactive Chart.js vital curves (Heart Rate, Blood Pressure, SpO2).
+   - Click **"Record New Vitals"** &rarr; Demonstrates atomic `$push` update.
+   - Click **"Update Billing"** &rarr; Demonstrates atomic `$inc` update.
+4. **Admission Form (`/patients/new`)**:
+   - Click **"Fill Invalid Sample"** and click Submit &rarr; Demonstrates MongoDB `$jsonSchema` blocking malformed entries with a red error badge!
+5. **Aggregation Hub (`/analytics`)**:
+   - Show the 4 pipelines: Department Revenue (`$group`), Critical Vitals Triage (`$unwind`), Pharmacy Demand (`$group`), and Executive Facets (`$facet`).
+   - Click **"View Pipeline Query"** to show the raw MongoDB code on screen.
+6. **AI Vector Search (`/ai-search`)**:
+   - Click sample query *"acute chest pain and elevated palpitations"*.
+   - Show that it returns **Ethan Wright (PAT-1005)** with 100% match and **Robert Miller (PAT-1001)** with 70.7% match, recommending Cardiology drugs based on historical charts.
+
+### Step 4: Show the Generated Deliverable PDFs
+Point to the compiled PDFs:
+- [`SmartHospital_Project_Report.pdf`](SmartHospital_Project_Report.pdf)
+- [`SmartHospital_Presentation.pdf`](SmartHospital_Presentation.pdf)
+
+---
+
+## ⚡ Quick Start Guide
 
 ### 1. Prerequisites & Dependencies
-Ensure Python 3.10+ is installed. Install the dependencies:
+Ensure Python 3.10+ is installed. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure MongoDB Connection (Optional)
-The project works out-of-the-box!
-- **Default / Offline Mode**: If no MongoDB server is running, the app automatically activates the built-in **In-Memory Mock Mode** so you can run the entire system offline during exams or presentations.
-- **Local MongoDB**: Ensure `mongod` service is running on `mongodb://localhost:27017/`.
-- **MongoDB Atlas**: Open `.env` and set your Atlas URI:
-  ```env
-  MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/
-  DATABASE_NAME=SmartHospitalDB
-  ENABLE_OFFLINE_MOCK_FALLBACK=True
-  ```
-
-### 3. Launch the Web Application
+### 2. Run Locally
 ```bash
 python app.py
 ```
-Open your browser and navigate to:
-👉 **`http://localhost:5000`**
+Open **`http://localhost:5000`** in your browser.
+
+> **Offline Safe**: If local MongoDB is not running, the app automatically switches to **In-Memory Mock Mode**, so you can present without needing an active internet connection or local database daemon.
 
 ---
 
-## 🖥️ Web Portal Navigation
+## 🎓 Academic Viva Cheat Sheet (Top 4 Questions)
 
-| URL Route | Feature | MongoDB Operations Highlighted |
-|---|---|---|
-| `/` | **Dashboard** | KPI counts, bed occupancy, recent admissions |
-| `/patients` | **Patient Directory** | Filter by department/status, search by keyword |
-| `/patient/<id>` | **Patient Profile** | Vitals trend chart, `$push` vitals modal, `$inc` billing update |
-| `/patients/new` | **Admit Patient** | Real-time MongoDB `$jsonSchema` validation test |
-| `/analytics` | **Aggregation Hub** | Visual charts for Pipelines 1 to 5 (`$group`, `$lookup`, `$unwind`, `$facet`) |
-| `/ai-search` | **AI Vector Search** | Natural language symptom search via 64-dim vector similarity |
-
----
-
-## ⚡ Running Standalone Demonstration & MongoDB Scripts
-
-### 1. Automated Execution Proof
-To generate a complete, formatted test report showing all operations:
-```bash
-python scripts/run_demo.py
-```
-This executes all CRUD queries, schema rejection tests, and aggregation pipelines, saving output directly to `output_demonstration.txt`.
-
-### 2. Standalone MongoDB Shell (`mongosh`) / Compass
-If the evaluator asks to see raw MongoDB queries:
-1. Open MongoDB Compass or `mongosh`.
-2. Open `scripts/mongo_queries.js`.
-3. Copy-paste the commands directly into the MongoDB shell or Compass Aggregation Pipeline tab.
-
----
-
-## 🎓 Academic Viva Cheat Sheet
-
-- **Why Embed Vitals?** High read locality, bounded size (<100 readings per stay), and atomic single-document modifications via `$push`.
-- **Why Reference Doctors?** Unbounded growth (one doctor treats thousands of patients) and avoiding update anomalies.
-- **Why MongoDB as a Vector Database?** Eliminates synchronization drift between separate databases (e.g. MongoDB + Pinecone). Operational records and vector embeddings live inside the same document.
-- **What is `$elemMatch`?** Ensures multiple filter conditions match against the **same** array element rather than different elements across the array.
-
-For the complete 15-question viva guide, see [`docs/VIVA_PREPARATION.md`](docs/VIVA_PREPARATION.md).
+1. **Why use an embedded document for vitals instead of a separate table?**
+   - *Answer*: High read locality (vitals are always viewed with the patient chart), bounded size (<50 readings per stay, <<16MB BSON limit), and atomic updates using `$push` without multi-table JOINs.
+2. **Why reference doctors instead of embedding?**
+   - *Answer*: 1-to-many unbounded relationship. One doctor treats thousands of patients over years. Referencing avoids duplicate doctor records and update anomalies.
+3. **How does MongoDB act as an AI Vector Database?**
+   - *Answer*: We store 10-dimensional clinical symptom vectors directly in the patient document (`clinical_embedding`). We compute cosine similarity ($Q \cdot D$) to find similar cases. In MongoDB Atlas, this maps natively to the `$vectorSearch` aggregation stage with HNSW indexing.
+4. **What is `$elemMatch`?**
+   - *Answer*: It ensures that multiple conditions match on the **exact same** array element (e.g., heart rate &ge; 100 AND SpO2 &le; 95 on the same reading), preventing false positive cross-element matches.
