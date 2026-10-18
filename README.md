@@ -47,7 +47,9 @@ Designed for final-year Computer Science & Engineering academic submission (**Co
 SmartHospital_MongoDB/
 │
 ├── app.py                     # Flask Web Application entry point (localhost:5000)
-├── requirements.txt           # Python dependencies (pymongo, flask, rich, etc.)
+├── SmartHospital_Project_Report.pdf  # ⭐ Formal Academic Project Report (PDF)
+├── SmartHospital_Presentation.pdf    # ⭐ 10-Slide Landscape Presentation Deck (PDF)
+├── requirements.txt           # Python dependencies (pymongo, flask, reportlab, etc.)
 ├── .env.example               # Environment configuration template
 ├── output_demonstration.txt   # Complete verified execution log of all operations
 │
@@ -75,8 +77,10 @@ SmartHospital_MongoDB/
 │   └── vector_engine.py       # MongoDB Vector Search engine & AI diagnostic assistant
 │
 ├── scripts/
-│   ├── mongo_queries.js       # Standalone raw MongoDB Shell / Compass query script
-│   └── run_demo.py            # Automated terminal demonstration and test runner
+│   ├── generate_report_pdf.py       # Standalone compiler for Project Report PDF
+│   ├── generate_presentation_pdf.py # Standalone compiler for Presentation PDF
+│   ├── mongo_queries.js             # Standalone raw MongoDB Shell / Compass query script
+│   └── run_demo.py                  # Automated terminal demonstration and test runner
 │
 ├── templates/                 # Modern web templates (Tailwind CSS + Chart.js)
 │   ├── base.html              # Base layout with navbar and system status badge
@@ -88,7 +92,9 @@ SmartHospital_MongoDB/
 │   └── ai_search.html         # AI Vector Search & Clinical Assistant
 │
 └── docs/                      # Course deliverables & presentation materials
-    ├── PROJECT_REPORT.md      # Formal academic project report (ready for submission)
+    ├── SmartHospital_Project_Report.pdf # PDF Project Report
+    ├── SmartHospital_Presentation.pdf   # PDF Presentation Slide Deck
+    ├── PROJECT_REPORT.md      # Formal academic project report (Markdown source)
     ├── VIVA_PREPARATION.md    # Top 15 Viva Voce Q&A and technical defense
     └── PRESENTATION_SLIDES.md # Slide-by-slide presentation deck script
 ```

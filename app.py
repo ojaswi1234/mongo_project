@@ -405,9 +405,11 @@ def api_seed_database():
 
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    debug_mode = os.environ.get("FLASK_DEBUG", "0") == "1"
     print("\n=======================================================")
     print(" Smart Hospital MongoDB Web Application Starting...")
     print(f" Database: {db.name} (Mode: {'In-Memory Mock' if is_mock else 'Live MongoDB'})")
-    print(" Access Web Portal at: http://localhost:5000")
+    print(f" Access Web Portal at: http://0.0.0.0:{port}")
     print("=======================================================\n")
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=debug_mode, host="0.0.0.0", port=port)
