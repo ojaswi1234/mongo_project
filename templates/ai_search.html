@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}AI Vector Search & Clinical Assistant | MediTrack MongoDB{% endblock %}
+{% block title %}Clinical AI Assistant & Case Similarity | MediTrack{% endblock %}
 
 {% block content %}
 <div class="space-y-6">
@@ -9,12 +9,11 @@
     <div class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-slate-900 text-white p-6 sm:p-8 rounded-2xl shadow-lg">
         <div class="max-w-3xl">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-semibold mb-3 border border-indigo-400/30">
-                <i class="fa-solid fa-brain"></i> MongoDB Vector Database + AI Semantic Search
+                <i class="fa-solid fa-brain"></i> Intelligent Clinical Case Matching
             </div>
-            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">AI Clinical Case Similarity & Vector Search</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">AI Clinical Case Matching & Symptom Analysis</h1>
             <p class="text-indigo-200 text-sm mt-2">
-                Query clinical cases using natural language symptoms. The system converts unstructured queries into
-                <strong>10-dimensional symptom vectors</strong> and executes vector cosine similarity matching against embedded patient records stored directly in MongoDB.
+                Analyze clinical cases using natural language symptoms. The assistant searches historical inpatient records to identify similar diagnostic profiles, department alignment, and common therapeutic regimens.
             </p>
         </div>
     </div>
@@ -42,14 +41,14 @@
                     </select>
                 </div>
                 <button type="submit" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow-md transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-magnifying-glass"></i> Search Vectors
+                    <i class="fa-solid fa-magnifying-glass"></i> Search Records
                 </button>
             </div>
         </form>
 
-        <!-- Viva One-Click Demo Query Pills -->
+        <!-- Sample Inquiries -->
         <div class="pt-2">
-            <span class="text-xs font-semibold text-slate-500 mr-2">Viva Demo Queries:</span>
+            <span class="text-xs font-semibold text-slate-500 mr-2">Sample Clinical Queries:</span>
             <div class="inline-flex flex-wrap gap-2 mt-2">
                 {% for sample in sample_queries %}
                 <a href="{{ url_for('ai_search', q=sample) }}"
@@ -170,42 +169,7 @@
             </div>
         </div>
 
-        <!-- Technical Deep Dive: Atlas $vectorSearch Pipeline Query -->
-        <div class="bg-slate-900 text-slate-200 p-6 rounded-2xl shadow-md space-y-3 font-mono text-xs">
-            <div class="flex items-center justify-between text-indigo-400 font-bold border-b border-slate-800 pb-2">
-                <span class="flex items-center gap-2">
-                    <i class="fa-solid fa-terminal"></i> Official MongoDB Atlas $vectorSearch Aggregation Stage
-                </span>
-                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">HNSW Index</span>
-            </div>
-            <p class="text-slate-400 text-[11px]">
-                In MongoDB Atlas, vector similarity queries are executed natively inside the aggregation pipeline using the <code class="text-indigo-300">$vectorSearch</code> operator:
-            </p>
-            <pre class="text-emerald-400 overflow-x-auto bg-slate-950 p-4 rounded-xl border border-slate-800 leading-relaxed">{{ atlas_pipeline|tojson(indent=2) }}</pre>
-        </div>
-
     {% endif %}
-
-    <!-- Architecture & Viva Preparation Box -->
-    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-        <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-            <i class="fa-solid fa-circle-question text-indigo-600"></i> Why Use MongoDB as a Vector Database? (Viva Defense)
-        </h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-600">
-            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                <strong class="text-slate-800 block mb-1">Single Data Store (No Sync Drift)</strong>
-                Traditional setups require syncing MongoDB with an external vector store (Pinecone/Weaviate). With MongoDB Vector Search, transactional data, vitals, billing, and vector embeddings reside in the exact same document.
-            </div>
-            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                <strong class="text-slate-800 block mb-1">Pre-Filtering with Metadata</strong>
-                MongoDB allows combining traditional metadata filters (e.g. <code class="bg-white px-1 rounded">department: "Cardiology"</code>) with vector similarity searches in a single aggregation pipeline without performance loss.
-            </div>
-            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                <strong class="text-slate-800 block mb-1">Standard BSON Compatibility</strong>
-                Embeddings are stored natively as standard arrays of IEEE 754 floating-point numbers (<code class="bg-white px-1 rounded">bsonType: "double"</code>), queryable via standard PyMongo drivers.
-            </div>
-        </div>
-    </div>
 
 </div>
 {% endblock %}

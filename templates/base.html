@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}SmartHospital | MongoDB & AI Healthcare Portal{% endblock %}</title>
+    <title>{% block title %}MediTrack | Hospital Care Management System{% endblock %}</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -42,50 +42,46 @@
             <div class="flex items-center justify-between h-16">
                 <!-- Brand Logo -->
                 <div class="flex items-center gap-3">
-                    <a href="{{ url_for('index') }}" class="flex items-center gap-2 text-brand-700 font-bold text-xl tracking-tight">
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-teal-400 text-white flex items-center justify-center shadow-md">
+                    <a href="{{ url_for('index') }}" class="flex items-center gap-2.5 text-brand-700 font-bold text-xl tracking-tight">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-teal-500 text-white flex items-center justify-center shadow-md">
                             <i class="fa-solid fa-hospital text-lg"></i>
                         </div>
-                        <span>MediTrack <span class="text-xs bg-brand-100 text-brand-800 px-2 py-0.5 rounded-full font-semibold">MongoDB + AI</span></span>
+                        <div class="flex flex-col">
+                            <span class="leading-none text-lg">MediTrack</span>
+                            <span class="text-[10px] text-slate-400 font-medium tracking-wide uppercase">Hospital System</span>
+                        </div>
                     </a>
                 </div>
 
                 <!-- Nav Links -->
                 <nav class="hidden md:flex items-center space-x-1 font-medium text-sm text-slate-600">
-                    <a href="{{ url_for('index') }}" class="px-3 py-2 rounded-lg hover:text-brand-700 hover:bg-slate-100 transition {% if request.endpoint == 'index' %}text-brand-700 bg-brand-50 font-semibold{% endif %}">
+                    <a href="{{ url_for('index') }}" class="px-3.5 py-2 rounded-xl hover:text-brand-700 hover:bg-slate-100 transition {% if request.endpoint == 'index' %}text-brand-700 bg-brand-50 font-semibold{% endif %}">
                         <i class="fa-solid fa-chart-line mr-1.5 text-slate-400"></i>Dashboard
                     </a>
-                    <a href="{{ url_for('patients_list') }}" class="px-3 py-2 rounded-lg hover:text-brand-700 hover:bg-slate-100 transition {% if request.endpoint == 'patients_list' %}text-brand-700 bg-brand-50 font-semibold{% endif %}">
+                    <a href="{{ url_for('patients_list') }}" class="px-3.5 py-2 rounded-xl hover:text-brand-700 hover:bg-slate-100 transition {% if request.endpoint == 'patients_list' %}text-brand-700 bg-brand-50 font-semibold{% endif %}">
                         <i class="fa-solid fa-user-injured mr-1.5 text-slate-400"></i>Patients
                     </a>
-                    <a href="{{ url_for('patient_create') }}" class="px-3 py-2 rounded-lg hover:text-brand-700 hover:bg-slate-100 transition {% if request.endpoint == 'patient_create' %}text-brand-700 bg-brand-50 font-semibold{% endif %}">
+                    <a href="{{ url_for('patient_create') }}" class="px-3.5 py-2 rounded-xl hover:text-brand-700 hover:bg-slate-100 transition {% if request.endpoint == 'patient_create' %}text-brand-700 bg-brand-50 font-semibold{% endif %}">
                         <i class="fa-solid fa-user-plus mr-1.5 text-slate-400"></i>Admit Patient
                     </a>
-                    <a href="{{ url_for('analytics') }}" class="px-3 py-2 rounded-lg hover:text-brand-700 hover:bg-slate-100 transition {% if request.endpoint == 'analytics' %}text-brand-700 bg-brand-50 font-semibold{% endif %}">
-                        <i class="fa-solid fa-layer-group mr-1.5 text-slate-400"></i>Aggregations
+                    <a href="{{ url_for('analytics') }}" class="px-3.5 py-2 rounded-xl hover:text-brand-700 hover:bg-slate-100 transition {% if request.endpoint == 'analytics' %}text-brand-700 bg-brand-50 font-semibold{% endif %}">
+                        <i class="fa-solid fa-chart-pie mr-1.5 text-slate-400"></i>Hospital Analytics
                     </a>
-                    <a href="{{ url_for('ai_search') }}" class="px-3 py-2 rounded-lg text-indigo-600 hover:bg-indigo-50 transition font-semibold flex items-center gap-1.5 {% if request.endpoint == 'ai_search' %}bg-indigo-100 text-indigo-800{% endif %}">
-                        <i class="fa-solid fa-brain text-indigo-500"></i>AI Vector Search
+                    <a href="{{ url_for('ai_search') }}" class="px-3.5 py-2 rounded-xl text-indigo-600 hover:bg-indigo-50 transition font-semibold flex items-center gap-1.5 {% if request.endpoint == 'ai_search' %}bg-indigo-100 text-indigo-800{% endif %}">
+                        <i class="fa-solid fa-stethoscope text-indigo-500"></i>Clinical AI Assistant
                     </a>
                 </nav>
 
-                <!-- System Mode & Quick Actions -->
+                <!-- System Status & Quick Actions -->
                 <div class="flex items-center gap-3">
-                    {% if is_mock_mode %}
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200" title="Connected to PyMongo In-Memory Mock">
-                        <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                        Mock Mode
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200" title="Hospital Database Online">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        System Online
                     </span>
-                    {% else %}
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-200" title="Connected to Live MongoDB Engine">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        Live MongoDB
-                    </span>
-                    {% endif %}
 
-                    <form action="{{ url_for('api_seed_database') }}" method="POST" onsubmit="return confirm('Reset and re-populate MongoDB with realistic demo data?');">
-                        <button type="submit" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg border border-slate-300 font-medium transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-rotate text-slate-500"></i> Re-seed DB
+                    <form action="{{ url_for('api_seed_database') }}" method="POST" onsubmit="return confirm('Reset patient records to default hospital dataset?');">
+                        <button type="submit" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200 font-medium transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrow-rotate-right text-slate-500"></i> Reset Demo Data
                         </button>
                     </form>
                 </div>
@@ -93,7 +89,7 @@
         </div>
     </header>
 
-    <!-- Flash Messages -->
+    <!-- Flash Notifications -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-4">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -124,15 +120,15 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-slate-500 text-xs text-center">
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-slate-500 text-xs">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div>
-                <strong>MediTrack Health</strong> — Final Year MongoDB & PyMongo Course Project (CO4, CO5, CO6)
+                <strong>MediTrack Hospital Care System</strong> &copy; 2026. Electronic Health Records & Telemetry Management.
             </div>
             <div class="flex items-center gap-4">
-                <span>Database: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-slate-700 font-mono">{{ database_name }}</code></span>
-                <span>Active Records: <strong class="text-slate-700">{{ total_active_patients }}</strong></span>
-                <span>MongoDB Vector Search: <strong class="text-indigo-600">Active (10-Dim Vectors)</strong></span>
+                <span>Active Inpatients: <strong class="text-slate-700">{{ total_active_patients }}</strong></span>
+                <span>Clinical Monitoring: <strong class="text-emerald-600">24/7 Active</strong></span>
+                <span>AI Clinical Assistant: <strong class="text-indigo-600">Ready</strong></span>
             </div>
         </div>
     </footer>

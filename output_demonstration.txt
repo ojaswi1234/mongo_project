@@ -3,7 +3,7 @@
 ======== SMART HOSPITAL & PATIENT CARE MANAGEMENT SYSTEM (MEDITRACK) =========
 ==============================================================================
 
-Execution Timestamp : 2026-10-18 23:57:31
+Execution Timestamp : 2026-10-19 00:19:23
 Author              : Ojaswi Bhardwaj (Reg: 12319444, Roll: 37, Section: K3P23SD)
 Course / Subject    : CSE494 - MongoDB Coursework Project (CO4, CO5, CO6)
 Live Deployment     : https://mongo-project-nwjl.onrender.com
@@ -39,7 +39,7 @@ Total Patients Seeded: 5
 ==============================================================================
 
 [4.1] CREATE Operation: Inserting new valid patient PAT-1009...
-Insert Success: True | Inserted ID: 6ad50f94c46f342cb2b85e4f
+Insert Success: True | Inserted ID: 6ad514b4e7651b576ac49ae0
 
 [4.2] READ Operation: Querying Admitted Cardiology Patients...
 +--------------+---------------+-------+---------+----------+--------------+
@@ -93,11 +93,11 @@ Soft Deletion Result: Status = 'Archived', is_archived = True
 +=================+=======================+=========================+
 | Metoprolol      |                     3 | 14.333333333333334 days |
 +-----------------+-----------------------+-------------------------+
+| Sumatriptan     |                     1 | 10.0 days               |
++-----------------+-----------------------+-------------------------+
 | Paracetamol     |                     1 | 5.0 days                |
 +-----------------+-----------------------+-------------------------+
 | Atorvastatin    |                     1 | 30.0 days               |
-+-----------------+-----------------------+-------------------------+
-| Aspirin         |                     1 | 30.0 days               |
 +-----------------+-----------------------+-------------------------+
 | Tramadol        |                     1 | 7.0 days                |
 +-----------------+-----------------------+-------------------------+

@@ -1,28 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Hospital Dashboard | MediTrack MongoDB{% endblock %}
+{% block title %}Hospital Dashboard | MediTrack Care System{% endblock %}
 
 {% block content %}
 <div class="space-y-6">
 
     <!-- Hero Header -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-gradient-to-r from-teal-800 to-slate-900 text-white p-6 rounded-2xl shadow-lg">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-gradient-to-r from-teal-800 to-slate-900 text-white p-6 sm:p-8 rounded-2xl shadow-lg">
         <div>
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-semibold mb-2 border border-teal-500/30">
-                <i class="fa-solid fa-database"></i> MongoDB Document Store + Atlas Vector Search
+                <i class="fa-solid fa-hospital-user"></i> Hospital Operations & Inpatient Care
             </div>
-            <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Smart Hospital Operational Overview</h1>
+            <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Clinical Care & Operations Overview</h1>
             <p class="text-slate-300 text-sm mt-1 max-w-2xl">
-                Demonstrating MongoDB hybrid schema design, <code class="text-teal-300">$jsonSchema</code> validation,
-                real-time <code class="text-teal-300">$push</code> vitals streaming, and multi-stage aggregation analytics.
+                Real-time patient vital telemetry, specialized department bed management, and clinical decision support.
             </p>
         </div>
         <div class="flex items-center gap-3">
             <a href="{{ url_for('ai_search') }}" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm transition shadow-md flex items-center gap-2">
-                <i class="fa-solid fa-brain"></i> Try AI Vector Search
+                <i class="fa-solid fa-stethoscope"></i> Clinical AI Assistant
             </a>
             <a href="{{ url_for('patient_create') }}" class="px-4 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-semibold text-sm transition shadow-md flex items-center gap-2">
-                <i class="fa-solid fa-plus"></i> New Admission
+                <i class="fa-solid fa-plus"></i> Admit New Patient
             </a>
         </div>
     </div>
@@ -32,10 +31,10 @@
         <!-- Card 1 -->
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
-                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Active Hospital Records</p>
+                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Inpatients</p>
                 <h3 class="text-2xl font-bold text-slate-800 mt-1">{{ total_patients }}</h3>
                 <span class="text-xs text-emerald-600 font-medium flex items-center gap-1 mt-1">
-                    <i class="fa-solid fa-shield-halved"></i> Schema Validated
+                    <i class="fa-solid fa-check-double"></i> Active Charts
                 </span>
             </div>
             <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl">
@@ -49,7 +48,7 @@
                 <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Currently Admitted</p>
                 <h3 class="text-2xl font-bold text-slate-800 mt-1">{{ admitted }}</h3>
                 <span class="text-xs text-amber-600 font-medium flex items-center gap-1 mt-1">
-                    <i class="fa-solid fa-bed-pulse"></i> Inpatient Care
+                    <i class="fa-solid fa-bed-pulse"></i> Inpatient Wards
                 </span>
             </div>
             <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
@@ -63,7 +62,7 @@
                 <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Under Observation</p>
                 <h3 class="text-2xl font-bold text-slate-800 mt-1">{{ observation }}</h3>
                 <span class="text-xs text-indigo-600 font-medium flex items-center gap-1 mt-1">
-                    <i class="fa-solid fa-heart-pulse"></i> Vitals Monitored
+                    <i class="fa-solid fa-heart-pulse"></i> Continuous Telemetry
                 </span>
             </div>
             <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
@@ -74,10 +73,10 @@
         <!-- Card 4 -->
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
-                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Discharged Patients</p>
+                <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Discharged</p>
                 <h3 class="text-2xl font-bold text-slate-800 mt-1">{{ discharged }}</h3>
                 <span class="text-xs text-sky-600 font-medium flex items-center gap-1 mt-1">
-                    <i class="fa-solid fa-check"></i> Safely Completed
+                    <i class="fa-solid fa-circle-check"></i> Care Completed
                 </span>
             </div>
             <div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl">
@@ -93,11 +92,11 @@
         <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
             <div class="p-5 border-b border-slate-100 flex items-center justify-between">
                 <div>
-                    <h3 class="font-bold text-slate-800 text-base">Recent Patient Admissions</h3>
-                    <p class="text-xs text-slate-500">Live documents retrieved via PyMongo from <code>patients</code> collection</p>
+                    <h3 class="font-bold text-slate-800 text-base">Recent Inpatient Admissions</h3>
+                    <p class="text-xs text-slate-500">Newly admitted and monitored patients across hospital wards</p>
                 </div>
                 <a href="{{ url_for('patients_list') }}" class="text-xs font-semibold text-brand-700 hover:text-brand-800 flex items-center gap-1">
-                    View All Directory <i class="fa-solid fa-arrow-right"></i>
+                    View Full Directory <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
 
@@ -105,11 +104,11 @@
                 <table class="w-full text-left text-sm text-slate-600">
                     <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500 border-b border-slate-100">
                         <tr>
-                            <th class="px-5 py-3">Patient Code</th>
-                            <th class="px-5 py-3">Patient Name</th>
+                            <th class="px-5 py-3">Patient ID</th>
+                            <th class="px-5 py-3">Patient Profile</th>
                             <th class="px-5 py-3">Department</th>
                             <th class="px-5 py-3">Status</th>
-                            <th class="px-5 py-3">Total Bill</th>
+                            <th class="px-5 py-3">Billing</th>
                             <th class="px-5 py-3 text-right">Action</th>
                         </tr>
                     </thead>
@@ -122,17 +121,17 @@
                                 <span class="text-xs text-slate-400">{{ p.age }} yrs • {{ p.gender }} • {{ p.blood_group }}</span>
                             </td>
                             <td class="px-5 py-3">
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700">
                                     {{ p.department }}
                                 </span>
                             </td>
                             <td class="px-5 py-3">
                                 {% if p.status == 'Admitted' %}
-                                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">Admitted</span>
+                                <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">Admitted</span>
                                 {% elif p.status == 'Under Observation' %}
-                                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">Observation</span>
+                                <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">Observation</span>
                                 {% else %}
-                                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">Discharged</span>
+                                <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Discharged</span>
                                 {% endif %}
                             </td>
                             <td class="px-5 py-3 font-semibold text-slate-700">
@@ -140,7 +139,7 @@
                             </td>
                             <td class="px-5 py-3 text-right">
                                 <a href="{{ url_for('patient_detail', patient_id=p.patient_id) }}" class="inline-flex items-center text-xs font-semibold text-brand-700 hover:text-brand-900 bg-brand-50 hover:bg-brand-100 px-3 py-1.5 rounded-lg transition">
-                                    View Record <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                                    Medical Chart <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
                                 </a>
                             </td>
                         </tr>
@@ -150,14 +149,14 @@
             </div>
         </div>
 
-        <!-- Department Bed Occupancy (1 Col) -->
+        <!-- Department Bed Capacity (1 Col) -->
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
             <div>
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-bold text-slate-800 text-base">Department Capacity</h3>
-                    <span class="text-xs font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-600">departments</span>
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="font-bold text-slate-800 text-base">Department Bed Occupancy</h3>
+                    <span class="text-xs font-semibold text-slate-500">Live Census</span>
                 </div>
-                <p class="text-xs text-slate-500 mb-5">Current physical bed allocations tracked across specialized hospital units.</p>
+                <p class="text-xs text-slate-500 mb-5">Current physical bed allocations across hospital units.</p>
 
                 <div class="space-y-4">
                     {% for d in departments %}
@@ -175,39 +174,45 @@
                 </div>
             </div>
 
-            <!-- AI Banner in Dashboard -->
+            <!-- AI Clinical Search Quick Banner -->
             <div class="mt-6 p-4 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100">
                 <div class="flex items-center gap-2 text-indigo-800 font-bold text-sm">
-                    <i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i> AI Vector Search Enabled
+                    <i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i> Clinical Diagnostic Search
                 </div>
                 <p class="text-xs text-slate-600 mt-1">
-                    Retrieve patients by natural language symptoms with 64-dimensional semantic similarity.
+                    Retrieve matching patient charts by symptom descriptions and review suggested treatments.
                 </p>
                 <a href="{{ url_for('ai_search') }}" class="inline-block mt-3 text-xs font-semibold text-indigo-700 hover:text-indigo-900">
-                    Launch AI Clinical Diagnostic Assistant &rarr;
+                    Open Clinical Diagnostic Assistant &rarr;
                 </a>
             </div>
         </div>
 
     </div>
 
-    <!-- Academic Rationale & Architecture Card (Viva Defense Guide) -->
+    <!-- Hospital Clinical Features Banner -->
     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <h3 class="font-bold text-slate-800 text-base mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-graduation-cap text-brand-600"></i> Course Evaluation Defense Highlights (CO4, CO5, CO6)
+        <h3 class="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-hospital-user text-brand-600"></i> Integrated Hospital Services & Patient Care Standards
         </h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-600 mt-3">
-            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-                <strong class="text-slate-800 block text-sm mb-1">1. Hybrid Schema Design</strong>
-                <span>Embedded <code class="bg-white px-1 py-0.5 rounded border">vitals_history</code> and <code class="bg-white px-1 py-0.5 rounded border">prescriptions</code> for atomic single-document reads, combined with referenced <code class="bg-white px-1 py-0.5 rounded border">doctor_id</code> to avoid data anomalies.</span>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-slate-600">
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                <strong class="text-slate-800 block text-sm mb-1 flex items-center gap-1.5">
+                    <i class="fa-solid fa-heart-pulse text-rose-500"></i> 24/7 Continuous Vitals Telemetry
+                </strong>
+                <span>Continuous monitoring of heart rate, SpO2, blood pressure, and core temperature with instant anomaly triage alerts.</span>
             </div>
-            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-                <strong class="text-slate-800 block text-sm mb-1">2. Schema Validation</strong>
-                <span>Enforced at database engine level via <code class="bg-white px-1 py-0.5 rounded border">$jsonSchema</code> with regex pattern matching (<code class="text-teal-700">^PAT-[0-9]{4}$</code>), numeric ranges, and enums.</span>
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                <strong class="text-slate-800 block text-sm mb-1 flex items-center gap-1.5">
+                    <i class="fa-solid fa-pills text-teal-600"></i> Centralized Pharmacy & Inpatient Billing
+                </strong>
+                <span>Digital prescription schedules, real-time medication tracking, and transparent itemized room and consultation fees.</span>
             </div>
-            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-                <strong class="text-slate-800 block text-sm mb-1">3. MongoDB Vector Database</strong>
-                <span>Clinical notes are indexed into 64-dimensional dense vectors stored directly in documents, compatible with Atlas <code class="bg-white px-1 py-0.5 rounded border">$vectorSearch</code> and cosine similarity.</span>
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                <strong class="text-slate-800 block text-sm mb-1 flex items-center gap-1.5">
+                    <i class="fa-solid fa-brain text-indigo-600"></i> Intelligent Clinical Case Matching
+                </strong>
+                <span>AI-assisted diagnosis matching new inpatient symptoms with historical charts for accurate department routing.</span>
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Patient Directory | MediTrack MongoDB{% endblock %}
+{% block title %}Patient Directory | MediTrack Care System{% endblock %}
 
 {% block content %}
 <div class="space-y-6">
@@ -9,10 +9,10 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Patient Directory</h1>
-            <p class="text-slate-500 text-sm">Query and filter electronic health records stored in MongoDB</p>
+            <p class="text-slate-500 text-sm">Comprehensive electronic health records directory across all medical departments</p>
         </div>
         <div class="flex items-center gap-3">
-            <a href="{{ url_for('patient_create') }}" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm transition shadow-sm flex items-center gap-2">
+            <a href="{{ url_for('patient_create') }}" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm transition shadow-sm flex items-center gap-2">
                 <i class="fa-solid fa-user-plus"></i> Admit New Patient
             </a>
         </div>
@@ -24,7 +24,7 @@
             <!-- Keyword search -->
             <div class="sm:col-span-5 relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
-                <input type="text" name="q" value="{{ search_query }}" placeholder="Search by name, ID (PAT-1001), or notes..."
+                <input type="text" name="q" value="{{ search_query }}" placeholder="Search by name, ID (PAT-1001), or symptoms..."
                     class="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition">
             </div>
 
@@ -66,7 +66,7 @@
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="p-4 border-b border-slate-100 flex items-center justify-between text-xs text-slate-500">
             <span>Showing <strong class="text-slate-800">{{ patients|length }}</strong> registered patient records</span>
-            <span class="font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-600">db.patients.find(...)</span>
+            <span class="text-xs text-slate-400">Electronic Health Records</span>
         </div>
 
         {% if patients %}
@@ -106,7 +106,7 @@
                             <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-700">
                                 {{ p.department }}
                             </span>
-                            <div class="text-[11px] text-slate-400 mt-1">Doc: {{ p.assigned_doctor_id }}</div>
+                            <div class="text-[11px] text-slate-400 mt-1">Doc: {{ p.assigned_doctor_name or 'Staff Physician' }}</div>
                         </td>
 
                         <!-- Status Badge -->

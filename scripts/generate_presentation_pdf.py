@@ -11,7 +11,7 @@ from reportlab.lib import colors
 from reportlab.lib.units import inch
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Image
 )
 from reportlab.pdfgen import canvas
 
@@ -146,8 +146,13 @@ def build_presentation_pdf(filename="SmartHospital_Presentation.pdf"):
     # =========================================================================
     # SLIDE 1: TITLE SLIDE
     # =========================================================================
-    story.append(Spacer(1, 40))
-    story.append(Paragraph("COURSE OUTCOMES: CO4, CO5, CO6 (LEVEL 2 & 3) — 30 MARKS EVALUATION", ParagraphStyle('TopBadge', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=10, textColor=c_primary, alignment=1, spaceAfter=15)))
+    logo_path = os.path.join(os.path.dirname(__file__), "..", "assets", "lpu.PNG")
+    if os.path.exists(logo_path):
+        story.append(Image(logo_path, width=150, height=60))
+        story.append(Spacer(1, 8))
+    else:
+        story.append(Spacer(1, 40))
+    story.append(Paragraph("COURSE OUTCOMES: CO4, CO5, CO6 (LEVEL 2 & 3) — 30 MARKS EVALUATION", ParagraphStyle('TopBadge', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=10, textColor=c_primary, alignment=1, spaceAfter=10)))
     
     t_title = Paragraph("MediTrack: Smart Hospital Care System<br/>with MongoDB & AI Vector Search", ParagraphStyle('BigTitle', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=28, leading=34, textColor=c_dark, alignment=1, spaceAfter=12))
     story.append(t_title)

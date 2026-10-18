@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Admit New Patient | MediTrack MongoDB{% endblock %}
+{% block title %}Admit New Patient | MediTrack{% endblock %}
 
 {% block content %}
 <div class="max-w-4xl mx-auto space-y-6">
@@ -8,29 +8,8 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Patient Admission & Schema Validation</h1>
-            <p class="text-slate-500 text-sm">Demonstrating MongoDB <code class="text-teal-700 font-bold">$jsonSchema</code> validation and PyMongo document insertion</p>
-        </div>
-        <!-- Viva Demo Quick Test Buttons -->
-        <div class="flex items-center gap-2">
-            <button type="button" onclick="fillValidSample()" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl text-xs font-semibold transition">
-                <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Fill Valid Sample
-            </button>
-            <button type="button" onclick="fillInvalidSample()" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 rounded-xl text-xs font-semibold transition" title="Fills data violating regex and age limits to demonstrate error catching">
-                <i class="fa-solid fa-bug mr-1"></i> Fill Invalid (Test Error)
-            </button>
-        </div>
-    </div>
-
-    <!-- Info Alert Box -->
-    <div class="p-4 bg-teal-50 border border-teal-200 rounded-2xl text-xs text-teal-900 flex items-start gap-3">
-        <i class="fa-solid fa-shield-halved text-teal-600 text-lg mt-0.5"></i>
-        <div>
-            <strong class="font-bold">Database Level Validation Enforced:</strong>
-            <p class="mt-0.5 text-teal-800">
-                Patient ID must strictly match regex <code class="bg-white px-1 py-0.5 rounded font-mono text-teal-900">^PAT-[0-9]{4}$</code>.
-                Age must be an integer between 0 and 125. Gender, Blood Group, and Department are verified against strict MongoDB BSON schema rules.
-            </p>
+            <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Patient Admission & Registration</h1>
+            <p class="text-slate-500 text-sm">Register new inpatient admission and initialize digital medical chart</p>
         </div>
     </div>
 
@@ -131,7 +110,7 @@
         <!-- Section 3: Initial Vital Check & Notes -->
         <div>
             <h3 class="font-bold text-slate-800 text-sm mb-4 pb-2 border-b border-slate-100 flex items-center gap-2">
-                <i class="fa-solid fa-heart-pulse text-brand-600"></i> Initial Vitals (Embedded Array Item) & Notes
+                <i class="fa-solid fa-heart-pulse text-brand-600"></i> Initial Vitals & Clinical Notes
             </h3>
 
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -156,7 +135,6 @@
             <div class="mt-4">
                 <label class="block text-slate-700 font-semibold mb-1">
                     Clinical Diagnostic Notes
-                    <span class="text-[10px] text-slate-400 font-normal">(Used for MongoDB Vector Search embedding!)</span>
                 </label>
                 <textarea id="medical_notes" name="medical_notes" rows="2" placeholder="e.g. Patient presents mild arrhythmia and dizziness during exertion..."
                     class="w-full px-3 py-2 border rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
@@ -200,36 +178,11 @@
                 Cancel
             </a>
             <button type="submit" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-md transition flex items-center gap-2">
-                <i class="fa-solid fa-check"></i> Register Patient to MongoDB
+                <i class="fa-solid fa-check"></i> Register Inpatient
             </button>
         </div>
 
     </form>
 
 </div>
-
-<script>
-    function fillValidSample() {
-        const randId = Math.floor(1010 + Math.random() * 8900);
-        document.getElementById('patient_id').value = 'PAT-' + randId;
-        document.getElementById('name').value = 'Arthur Pendelton';
-        document.getElementById('age').value = '52';
-        document.getElementById('gender').value = 'Male';
-        document.getElementById('blood_group').value = 'O+';
-        document.getElementById('department').value = 'Cardiology';
-        document.getElementById('status').value = 'Admitted';
-        document.getElementById('medical_notes').value = 'Patient presented with intermittent chest tightness and elevated pulse after light exertion.';
-        document.getElementById('blood_pressure').value = '135/88';
-        document.getElementById('heart_rate').value = '84';
-        document.getElementById('oxygen_level').value = '97';
-    }
-
-    function fillInvalidSample() {
-        // Intentionally invalid to demonstrate $jsonSchema error handling
-        document.getElementById('patient_id').value = 'INVALID_ID_FORMAT'; // Violates ^PAT-[0-9]{4}$
-        document.getElementById('name').value = 'Bad Validation Sample';
-        document.getElementById('age').value = '175'; // Violates max 125
-        document.getElementById('medical_notes').value = 'This document should fail schema validation in MongoDB.';
-    }
-</script>
 {% endblock %}

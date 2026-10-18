@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}{{ patient.name }} ({{ patient.patient_id }}) | MediTrack MongoDB{% endblock %}
+{% block title %}{{ patient.name }} ({{ patient.patient_id }}) | MediTrack Medical Chart{% endblock %}
 
 {% block content %}
 <div class="space-y-6">
 
-    <!-- Breadcrumb & Back -->
+    <!-- Breadcrumb & Actions -->
     <div class="flex items-center justify-between">
         <a href="{{ url_for('patients_list') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition">
             <i class="fa-solid fa-arrow-left"></i> Back to Patient Directory
         </a>
         <div class="flex items-center gap-2">
             {% if patient.status != 'Discharged' %}
-            <form action="{{ url_for('patient_discharge', patient_id=patient.patient_id) }}" method="POST" onsubmit="return confirm('Discharge this patient?');">
+            <form action="{{ url_for('patient_discharge', patient_id=patient.patient_id) }}" method="POST" onsubmit="return confirm('Discharge this patient from active care?');">
                 <button type="submit" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-person-walking-dashed-line-arrow-right"></i> Discharge
+                    <i class="fa-solid fa-person-walking-dashed-line-arrow-right"></i> Discharge Patient
                 </button>
             </form>
             {% endif %}
 
-            <form action="{{ url_for('patient_archive', patient_id=patient.patient_id) }}" method="POST" onsubmit="return confirm('Soft-delete/Archive this record (HIPAA audit)?');">
+            <form action="{{ url_for('patient_archive', patient_id=patient.patient_id) }}" method="POST" onsubmit="return confirm('Archive this patient record?');">
                 <button type="submit" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-300 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
                     <i class="fa-solid fa-box-archive"></i> Archive Record
                 </button>
@@ -42,7 +42,7 @@
                     {% if patient.status == 'Admitted' %}
                     <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">Admitted</span>
                     {% elif patient.status == 'Under Observation' %}
-                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">Observation</span>
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">Under Observation</span>
                     {% else %}
                     <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">Discharged</span>
                     {% endif %}
@@ -51,7 +51,7 @@
                     <span><i class="fa-solid fa-cake-candles mr-1 text-slate-400"></i> {{ patient.age }} years</span>
                     <span><i class="fa-solid fa-venus-mars mr-1 text-slate-400"></i> {{ patient.gender }}</span>
                     <span><i class="fa-solid fa-droplet mr-1 text-rose-500"></i> Blood Group: <strong>{{ patient.blood_group }}</strong></span>
-                    <span><i class="fa-solid fa-hospital-user mr-1 text-slate-400"></i> Dept: <strong>{{ patient.department }}</strong></span>
+                    <span><i class="fa-solid fa-hospital-user mr-1 text-slate-400"></i> Department: <strong>{{ patient.department }}</strong></span>
                     <span><i class="fa-regular fa-calendar-check mr-1 text-slate-400"></i> Admitted: {{ patient.admission_date.strftime('%b %d, %Y') if patient.admission_date else 'N/A' }}</span>
                 </div>
             </div>
@@ -60,12 +60,12 @@
         <!-- Contact Box -->
         <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs text-slate-600 min-w-[240px]">
             <p class="font-semibold text-slate-800 mb-1 flex items-center gap-1.5">
-                <i class="fa-solid fa-address-book text-brand-600"></i> Contact & Emergency
+                <i class="fa-solid fa-address-book text-brand-600"></i> Emergency Contact
             </p>
             <div>Phone: <strong class="text-slate-800">{{ patient.contact.phone or 'N/A' }}</strong></div>
             <div>Email: <span class="text-slate-700">{{ patient.contact.email or 'N/A' }}</span></div>
             <div class="mt-1 pt-1 border-t border-slate-200 text-[11px] text-rose-700 font-medium">
-                Emergency: {{ patient.contact.emergency_contact or 'N/A' }}
+                Next of Kin: {{ patient.contact.emergency_contact or 'N/A' }}
             </div>
         </div>
     </div>
@@ -73,14 +73,14 @@
     <!-- Doctor Details & Clinical Notes Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-        <!-- Assigned Doctor (Resolved via MongoDB Reference) -->
+        <!-- Assigned Doctor Card -->
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-3">
                     <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-user-doctor text-brand-600"></i> Assigned Physician
+                        <i class="fa-solid fa-user-doctor text-brand-600"></i> Attending Physician
                     </h3>
-                    <span class="text-[11px] font-mono bg-brand-50 text-brand-800 px-2 py-0.5 rounded border border-brand-200">Referenced DOC</span>
+                    <span class="text-[11px] font-semibold bg-brand-50 text-brand-800 px-2 py-0.5 rounded border border-brand-200">On Duty</span>
                 </div>
                 {% if doctor %}
                 <div class="space-y-1.5 text-xs text-slate-600">
@@ -92,18 +92,18 @@
                     <div>Rating: <span class="text-amber-500 font-bold">★ {{ doctor.ratings }}</span>/5.0</div>
                 </div>
                 {% else %}
-                <p class="text-xs text-slate-400 italic">Doctor record not found for ID: {{ patient.assigned_doctor_id }}</p>
+                <p class="text-xs text-slate-400 italic">Physician assigned: {{ patient.assigned_doctor_name or 'Medical Staff' }}</p>
                 {% endif %}
             </div>
             <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400">
-                Resolved via foreign key <code class="bg-slate-100 px-1 rounded text-slate-700">assigned_doctor_id</code>
+                Primary Physician In-Charge
             </div>
         </div>
 
         <!-- Clinical Medical Notes -->
         <div class="md:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
             <h3 class="font-bold text-slate-800 text-sm mb-3 flex items-center gap-2">
-                <i class="fa-solid fa-notes-medical text-brand-600"></i> Clinical Notes & Diagnostic History
+                <i class="fa-solid fa-notes-medical text-brand-600"></i> Clinical Notes & Diagnostic Observations
             </h3>
             {% if patient.medical_notes and patient.medical_notes|length > 0 %}
             <ul class="space-y-2">
@@ -118,14 +118,14 @@
             <p class="text-xs text-slate-400 italic">No diagnostic notes recorded yet.</p>
             {% endif %}
 
-            <!-- Embedded 64-Dim Vector Search Status -->
+            <!-- Case Similarity Link -->
             <div class="mt-4 p-3 bg-indigo-50/70 border border-indigo-100 rounded-xl flex items-center justify-between text-xs">
                 <div class="flex items-center gap-2 text-indigo-900 font-medium">
                     <i class="fa-solid fa-brain text-indigo-600"></i>
-                    <span>Vector Embedding Cached: <strong class="font-mono">64-Float Array</strong></span>
+                    <span>Clinical Symptoms Profile Ready</span>
                 </div>
                 <a href="{{ url_for('ai_search', q=patient.name) }}" class="text-indigo-700 font-bold hover:underline">
-                    Find Similar Cases &rarr;
+                    Find Correlated Cases &rarr;
                 </a>
             </div>
         </div>
@@ -138,10 +138,10 @@
                 <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
                     <i class="fa-solid fa-chart-area text-teal-600"></i> Vital Signs Historical Trends
                 </h3>
-                <p class="text-xs text-slate-500">Live multi-point graph generated from embedded <code class="text-teal-700 font-mono">vitals_history</code> array</p>
+                <p class="text-xs text-slate-500">Continuous inpatient physiological telemetry over time</p>
             </div>
             <button onclick="document.getElementById('addVitalModal').classList.remove('hidden')" class="px-3.5 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-sm">
-                <i class="fa-solid fa-plus"></i> Record New Vital Check ($push)
+                <i class="fa-solid fa-plus"></i> Record New Vitals
             </button>
         </div>
 
@@ -151,7 +151,7 @@
         </div>
         {% else %}
         <div class="text-center py-8 text-xs text-slate-400 italic">
-            No vitals history to plot. Click "Record New Vital Check" above to append data.
+            No vitals history logged yet. Click "Record New Vitals" above to add telemetry readings.
         </div>
         {% endif %}
     </div>
@@ -159,13 +159,13 @@
     <!-- Prescriptions and Billing Cards Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-        <!-- Embedded Prescriptions -->
+        <!-- Active Prescriptions -->
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-                    <i class="fa-solid fa-pills text-teal-600"></i> Active Prescriptions
+                    <i class="fa-solid fa-pills text-teal-600"></i> Active Prescriptions & Dosage
                 </h3>
-                <span class="text-xs font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-600">Embedded Array</span>
+                <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600">Pharmacy</span>
             </div>
 
             {% if patient.prescriptions and patient.prescriptions|length > 0 %}
@@ -187,12 +187,12 @@
             {% endif %}
         </div>
 
-        <!-- Embedded Billing Breakdown & $inc Update Modal/Form -->
+        <!-- Financial Ledger & Billing Breakdown -->
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-receipt text-teal-600"></i> Financial Ledger & Billing
+                        <i class="fa-solid fa-receipt text-teal-600"></i> Inpatient Financial Ledger
                     </h3>
                     <span class="text-xs font-semibold px-2.5 py-1 rounded-full
                         {% if patient.billing.payment_status == 'Paid' %} bg-emerald-100 text-emerald-800
@@ -205,7 +205,7 @@
 
                 <div class="space-y-2 text-xs text-slate-600">
                     <div class="flex justify-between py-1 border-b border-slate-100">
-                        <span>Room / Bed Charges:</span>
+                        <span>Room / Ward Charges:</span>
                         <strong class="text-slate-800">${{ patient.billing.room_charges }}</strong>
                     </div>
                     <div class="flex justify-between py-1 border-b border-slate-100">
@@ -213,7 +213,7 @@
                         <strong class="text-slate-800">${{ patient.billing.consultation_fee }}</strong>
                     </div>
                     <div class="flex justify-between py-1 border-b border-slate-100">
-                        <span>Pharmacy & Medicine Charges:</span>
+                        <span>Pharmacy & Medication Charges:</span>
                         <strong class="text-slate-800">${{ patient.billing.medicine_charges }}</strong>
                     </div>
                     <div class="flex justify-between py-2 text-sm font-bold text-slate-900 border-t border-slate-200">
@@ -223,12 +223,12 @@
                 </div>
             </div>
 
-            <!-- Quick Form to demonstrate $inc update operator -->
+            <!-- Quick Form to update charges -->
             <form action="{{ url_for('patient_update_billing', patient_id=patient.patient_id) }}" method="POST" class="mt-4 pt-3 border-t border-slate-100">
-                <p class="text-[11px] text-slate-500 mb-2 font-semibold">Update Ledger via MongoDB <code class="text-brand-700 font-mono">$inc</code> and <code class="text-brand-700 font-mono">$set</code>:</p>
+                <p class="text-[11px] text-slate-600 mb-2 font-semibold">Add Charges or Update Payment Status:</p>
                 <div class="grid grid-cols-2 gap-2 text-xs">
                     <div>
-                        <label class="block text-[10px] text-slate-500 font-medium">Add Medicine ($):</label>
+                        <label class="block text-[10px] text-slate-500 font-medium">Add Pharmacy Fee ($):</label>
                         <input type="number" step="10" name="additional_medicine_charge" placeholder="0" class="w-full px-2 py-1.5 border rounded-lg bg-slate-50">
                     </div>
                     <div>
@@ -242,7 +242,7 @@
                     </div>
                 </div>
                 <button type="submit" class="w-full mt-2 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold transition">
-                    Commit Billing Update ($inc)
+                    Update Ledger
                 </button>
             </form>
         </div>
@@ -251,21 +251,21 @@
 
 </div>
 
-<!-- Modal: Record New Vitals ($push Demonstration) -->
+<!-- Modal: Record New Vitals -->
 <div id="addVitalModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
         <div class="flex items-center justify-between mb-4">
-            <h3 class="font-bold text-slate-800 text-base">Record New Vital Check ($push)</h3>
+            <h3 class="font-bold text-slate-800 text-base">Record Inpatient Vitals</h3>
             <button onclick="document.getElementById('addVitalModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
         </div>
         <p class="text-xs text-slate-500 mb-4">
-            Appends a new vital sign measurement to the embedded <code class="text-teal-700">vitals_history</code> array using PyMongo.
+            Enter current vital sign observations for telemetry charting.
         </p>
         <form action="{{ url_for('patient_add_vitals', patient_id=patient.patient_id) }}" method="POST" class="space-y-3 text-xs">
             <div>
-                <label class="block text-slate-600 font-semibold mb-1">Blood Pressure (Systolic/Diastolic)</label>
+                <label class="block text-slate-600 font-semibold mb-1">Blood Pressure (e.g. 120/80)</label>
                 <input type="text" name="blood_pressure" value="120/80" required class="w-full px-3 py-2 border rounded-xl bg-slate-50 focus:bg-white">
             </div>
             <div class="grid grid-cols-2 gap-3">
@@ -284,7 +284,7 @@
             </div>
             <div class="pt-3 flex gap-2">
                 <button type="submit" class="flex-1 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl transition">
-                    Append Vitals ($push)
+                    Save Vitals
                 </button>
                 <button type="button" onclick="document.getElementById('addVitalModal').classList.add('hidden')" class="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold rounded-xl transition">
                     Cancel

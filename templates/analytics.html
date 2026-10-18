@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}MongoDB Aggregation Analytics | MediTrack{% endblock %}
+{% block title %}Hospital Operational Analytics | MediTrack{% endblock %}
 
 {% block content %}
 <div class="space-y-6">
@@ -8,42 +8,19 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-slate-800 tracking-tight">MongoDB Aggregation Analytics</h1>
+            <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Hospital Operational & Clinical Analytics</h1>
             <p class="text-slate-500 text-sm">
-                Real-time business and clinical intelligence powered by multi-stage aggregation pipelines:
-                <code class="text-teal-700 font-mono font-bold">$match</code>, <code class="text-teal-700 font-mono font-bold">$group</code>, <code class="text-teal-700 font-mono font-bold">$unwind</code>, <code class="text-teal-700 font-mono font-bold">$lookup</code>, <code class="text-teal-700 font-mono font-bold">$facet</code>
+                Real-time clinical metrics, departmental financial distribution, physician workload, and pharmacy tracking.
             </p>
         </div>
     </div>
 
-    <!-- Section 1: Department Financials & Patients ($match + $group + $sort) -->
+    <!-- Section 1: Department Financials & Patients -->
     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
-            <div>
-                <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded bg-teal-100 text-teal-800">PIPELINE 1</span>
-                <h3 class="text-base font-bold text-slate-800 mt-1">Department Patient Volumes & Financial Revenue</h3>
-                <p class="text-xs text-slate-500">Stages: <code>$match</code> &rarr; <code>$group</code> &rarr; <code>$project</code> &rarr; <code>$sort</code></p>
-            </div>
-            <button onclick="toggleCode('pipe1Code')" class="text-xs font-semibold text-slate-600 hover:text-brand-700 bg-slate-100 px-3 py-1.5 rounded-lg transition">
-                <i class="fa-solid fa-code mr-1"></i> View Pipeline Query
-            </button>
+        <div class="pb-3 border-b border-slate-100">
+            <h3 class="text-base font-bold text-slate-800">Department Patient Volumes & Financial Revenue</h3>
+            <p class="text-xs text-slate-500">Patient census, demographic averages, and aggregated billing performance by specialty</p>
         </div>
-
-        <!-- Hidden Code Box -->
-        <pre id="pipe1Code" class="hidden bg-slate-900 text-teal-300 p-4 rounded-xl text-xs overflow-x-auto font-mono">
-db.patients.aggregate([
-  { $match: { status: { $ne: "Archived" } } },
-  {
-    $group: {
-      _id: "$department",
-      total_patients: { $sum: 1 },
-      average_age: { $avg: "$age" },
-      total_revenue: { $sum: "$billing.total_amount" },
-      avg_bill: { $avg: "$billing.total_amount" }
-    }
-  },
-  { $sort: { total_revenue: -1 } }
-]);</pre>
 
         <!-- Chart and Table Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
@@ -77,41 +54,12 @@ db.patients.aggregate([
         </div>
     </div>
 
-    <!-- Section 2: Doctor Workload ($lookup Cross-Collection Join) -->
+    <!-- Section 2: Doctor Workload -->
     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
-            <div>
-                <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded bg-indigo-100 text-indigo-800">PIPELINE 2</span>
-                <h3 class="text-base font-bold text-slate-800 mt-1">Doctor Workload & Revenue Allocation ($lookup Join)</h3>
-                <p class="text-xs text-slate-500">Stages: <code>$lookup</code> (cross collection with <code>patients</code>) &rarr; <code>$project</code> &rarr; <code>$sort</code></p>
-            </div>
-            <button onclick="toggleCode('pipe2Code')" class="text-xs font-semibold text-slate-600 hover:text-brand-700 bg-slate-100 px-3 py-1.5 rounded-lg transition">
-                <i class="fa-solid fa-code mr-1"></i> View Pipeline Query
-            </button>
+        <div class="pb-3 border-b border-slate-100">
+            <h3 class="text-base font-bold text-slate-800">Physician Workload & Revenue Allocation</h3>
+            <p class="text-xs text-slate-500">Active assigned inpatient caseload and cumulative generated revenue per physician</p>
         </div>
-
-        <!-- Hidden Code Box -->
-        <pre id="pipe2Code" class="hidden bg-slate-900 text-indigo-300 p-4 rounded-xl text-xs overflow-x-auto font-mono">
-db.doctors.aggregate([
-  {
-    $lookup: {
-      from: "patients",
-      localField: "doctor_id",
-      foreignField: "assigned_doctor_id",
-      as: "patient_records"
-    }
-  },
-  {
-    $project: {
-      doctor_id: 1,
-      name: 1,
-      department: 1,
-      patient_count: { $size: "$patient_records" },
-      total_revenue: { $sum: "$patient_records.billing.total_amount" }
-    }
-  },
-  { $sort: { patient_count: -1 } }
-]);</pre>
 
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs text-slate-600">
@@ -150,14 +98,11 @@ db.doctors.aggregate([
     <!-- Section 3 & 4 Grid: Critical Vitals ($unwind) & Top Medications ($unwind + $group) -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-        <!-- Critical Vitals Alerts ($unwind + $match) -->
+        <!-- Critical Vitals Alerts -->
         <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div>
-                    <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded bg-rose-100 text-rose-800">PIPELINE 3</span>
-                    <h3 class="text-sm font-bold text-slate-800 mt-1">Clinical Vitals Anomaly Detection ($unwind)</h3>
-                    <p class="text-xs text-slate-500">Deconstructs <code>vitals_history</code> array and matches severe thresholds (HR &ge; 100 or SpO2 &le; 95)</p>
-                </div>
+            <div class="pb-3 border-b border-slate-100">
+                <h3 class="text-sm font-bold text-slate-800">Clinical Vitals Anomaly Monitoring</h3>
+                <p class="text-xs text-slate-500">Flagged records requiring immediate attention (Heart Rate &ge; 100 or SpO2 &le; 95%)</p>
             </div>
 
             {% if vitals_anomalies %}
@@ -201,14 +146,11 @@ db.doctors.aggregate([
             {% endif %}
         </div>
 
-        <!-- Top Prescriptions ($unwind + $group) -->
+        <!-- Top Prescriptions -->
         <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div>
-                    <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded bg-teal-100 text-teal-800">PIPELINE 4</span>
-                    <h3 class="text-sm font-bold text-slate-800 mt-1">Most Prescribed Medications ($unwind + $group)</h3>
-                    <p class="text-xs text-slate-500">Pharmacy inventory intelligence across all patient treatment plans</p>
-                </div>
+            <div class="pb-3 border-b border-slate-100">
+                <h3 class="text-sm font-bold text-slate-800">Most Prescribed Medications</h3>
+                <p class="text-xs text-slate-500">Pharmacy inventory dispensing intelligence across all active treatment plans</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
@@ -233,38 +175,12 @@ db.doctors.aggregate([
 
     </div>
 
-    <!-- Section 5: Executive Hospital Dashboard ($facet Multi-Perspective Query) -->
+    <!-- Section 5: Executive Hospital Summary -->
     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
-            <div>
-                <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded bg-purple-100 text-purple-800">PIPELINE 5</span>
-                <h3 class="text-base font-bold text-slate-800 mt-1">Multi-Faceted Executive KPI Breakdown ($facet)</h3>
-                <p class="text-xs text-slate-500">Executes multiple parallel aggregation pipelines in a single database round-trip!</p>
-            </div>
-            <button onclick="toggleCode('pipe5Code')" class="text-xs font-semibold text-slate-600 hover:text-brand-700 bg-slate-100 px-3 py-1.5 rounded-lg transition">
-                <i class="fa-solid fa-code mr-1"></i> View Pipeline Query
-            </button>
+        <div class="pb-3 border-b border-slate-100">
+            <h3 class="text-base font-bold text-slate-800">Hospital Bed & Financial Settlement Summary</h3>
+            <p class="text-xs text-slate-500">Consolidated overview of patient admissions and billing realization status</p>
         </div>
-
-        <pre id="pipe5Code" class="hidden bg-slate-900 text-purple-300 p-4 rounded-xl text-xs overflow-x-auto font-mono">
-db.patients.aggregate([
-  {
-    $facet: {
-      status_summary: [
-        { $group: { _id: "$status", count: { $sum: 1 } } }
-      ],
-      billing_summary: [
-        {
-          $group: {
-            _id: "$billing.payment_status",
-            total_billed: { $sum: "$billing.total_amount" },
-            patient_count: { $sum: 1 }
-          }
-        }
-      ]
-    }
-  }
-]);</pre>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <!-- Sub-Facet 1: Status Summary -->
@@ -304,11 +220,6 @@ db.patients.aggregate([
 
 {% block scripts %}
 <script>
-    function toggleCode(id) {
-        const el = document.getElementById(id);
-        el.classList.toggle('hidden');
-    }
-
     // Chart 1: Department Revenue Bar Chart
     const deptLabels = [{% for d in dept_analytics %}"{{ d.department }}",{% endfor %}];
     const deptRevenues = [{% for d in dept_analytics %}{{ d.total_revenue }},{% endfor %}];
