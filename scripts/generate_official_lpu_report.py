@@ -144,7 +144,7 @@ def build_lpu_report(filename="SmartHospital_Project_Report.pdf"):
     story.append(Paragraph("COVER PAGE", cover_top))
     story.append(Spacer(1, 40))
     story.append(Paragraph("PROJECT REPORT", cover_title_report))
-    story.append(Paragraph("(Project Term January-May 2026)", cover_term))
+    story.append(Paragraph("(Project Term August-December 2026)", cover_term))
     story.append(Spacer(1, 40))
     story.append(Paragraph("SMART HOSPITAL MANAGEMENT SYSTEM", cover_proj_title))
     story.append(Spacer(1, 45))
@@ -189,7 +189,7 @@ def build_lpu_report(filename="SmartHospital_Project_Report.pdf"):
         "I hereby declare that the project work entitled (<b>“Smart Hospital Management System”</b>) is an "
         "authentic record of my own work carried out as requirements of Project for the award of "
         "<b>B.Tech Degree in Computer Science</b> from Lovely Professional University, Phagwara, "
-        "under the guidance of <b>Mr. Jaffar Amin Chacket</b>, during January to May 2026. All the information "
+        "under the guidance of <b>Mr. Jaffar Amin Chacket</b>, during August to December 2026. All the information "
         "furnished in this project report is based on my own intensive work and is genuine."
     )
     story.append(Paragraph(p_decl, front_body))
@@ -204,7 +204,7 @@ def build_lpu_report(filename="SmartHospital_Project_Report.pdf"):
         t_sig = Table([
             ["", Paragraph("(Signature of Student )", ParagraphStyle('SigHead', fontName='Times-Roman', fontSize=12, alignment=1))],
             ["", Image(sig_path, width=155, height=82)],
-            ["", Paragraph("Date: May 26, 2026", ParagraphStyle('SigDate', fontName='Times-Bold', fontSize=12, alignment=1))]
+            ["", Paragraph("Date: October 19, 2026", ParagraphStyle('SigDate', fontName='Times-Bold', fontSize=12, alignment=1))]
         ], colWidths=[280, 188])
         t_sig.setStyle(TableStyle([
             ('ALIGN', (1, 0), (1, -1), 'CENTER'),
@@ -238,7 +238,7 @@ def build_lpu_report(filename="SmartHospital_Project_Report.pdf"):
     story.append(Paragraph("Assistant Teacher", front_body))
     story.append(Paragraph("School of Computer Science and Engineering,<br/>Lovely Professional University, Phagwara, Punjab.", front_body))
     story.append(Spacer(1, 10))
-    story.append(Paragraph("Date : 26/05/2026", front_body))
+    story.append(Paragraph("Date : 19/10/2026", front_body))
 
     story.append(PageBreak())
 
